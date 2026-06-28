@@ -1,4 +1,4 @@
-import { motion, useTransform } from 'framer-motion';
+import { motion, useTransform, useMotionTemplate } from 'framer-motion';
 import { useMemo } from 'react';
 
 export default function AnimatedHeroBackground({ progress }) {
@@ -30,6 +30,14 @@ export default function AnimatedHeroBackground({ progress }) {
     // Phase 1 (Leaking): 0 to 30% of scroll
     // Phase 2 (Applying): 30% to 70% of scroll
     // Phase 3 (Waterproof): 70% to 100% of scroll
+
+    // Apple-style Cinematic 3D Camera Swoop
+    // The floor starts tilted at 60deg (looking down) and flattens out to 80deg (looking forward) while zooming in
+    const floorRotateX = useTransform(progress, [0, 1], [60, 80]);
+    const floorTranslateZ = useTransform(progress, [0, 1], [0, 150]);
+    
+    // We use useMotionTemplate to construct the dynamic transform string
+    const floorTransform = useMotionTemplate`rotateX(${floorRotateX}deg) translateZ(${floorTranslateZ}px)`;
 
     // Scroll-driven Opacities and Transforms
     // Epoxy takes twice as much scroll distance to spread now
@@ -179,7 +187,7 @@ export default function AnimatedHeroBackground({ progress }) {
                     backgroundImage: 'linear-gradient(rgba(148, 163, 184, 0.3) 2px, transparent 2px), linear-gradient(90deg, rgba(148, 163, 184, 0.3) 2px, transparent 2px)',
                     backgroundSize: '100px 100px',
                     borderTop: '6px solid #cbd5e1',
-                    transform: 'rotateX(70deg)',
+                    transform: floorTransform,
                     transformOrigin: 'top center',
                     display: 'flex',
                     justifyContent: 'center'
@@ -244,7 +252,7 @@ export default function AnimatedHeroBackground({ progress }) {
                         background: 'linear-gradient(180deg, rgba(6, 182, 212, 0.6), rgba(6, 182, 212, 0.95))',
                         borderTop: '8px solid #06b6d4',
                         boxShadow: '0 0 30px rgba(6, 182, 212, 0.5)',
-                        transform: 'rotateX(70deg) translateZ(5px)',
+                        transform: floorTransform, // Uses the exact same camera swoop as the concrete
                         transformOrigin: 'top center',
                         zIndex: 3,
                         backdropFilter: 'blur(2px)',

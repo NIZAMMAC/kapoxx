@@ -12,8 +12,9 @@ export default function Hero() {
 
     // Apply Apple-style inertia and physics smoothing to the raw scroll value
     const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
+        stiffness: 40,
+        damping: 15,
+        mass: 0.5,
         restDelta: 0.001
     });
 
