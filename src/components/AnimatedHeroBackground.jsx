@@ -164,8 +164,8 @@ export default function AnimatedHeroBackground({ progress }) {
                     display: 'flex',
                     justifyContent: 'center'
                 }}>
-                    {/* Multiple Sprawling Cracks SVG Base */}
-                    <svg viewBox="0 0 800 200" style={{ width: '100vw', maxWidth: '1200px', height: '300px', opacity: 0.6, position: 'absolute', top: 0 }}>
+                    {/* Multiple Sprawling Cracks SVG Base (Stretches across entire roof) */}
+                    <svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100%', height: '150vh', opacity: 0.6, position: 'absolute', top: 0 }}>
                         <g stroke="#94a3b8" fill="none">
                             {/* Center Crack */}
                             <path d="M 400 0 L 390 30 L 410 70 L 380 120 L 420 180 L 400 200" strokeWidth="4" />
@@ -186,7 +186,7 @@ export default function AnimatedHeroBackground({ progress }) {
                     </svg>
 
                     {/* Animated Water Flowing INSIDE ALL the cracks */}
-                    <motion.svg viewBox="0 0 800 200" style={{ width: '100vw', maxWidth: '1200px', height: '300px', position: 'absolute', top: 0, opacity: leakingOpacity }}>
+                    <motion.svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100%', height: '150vh', position: 'absolute', top: 0, opacity: leakingOpacity }}>
                         {[
                             { d: "M 400 0 L 390 30 L 410 70 L 380 120 L 420 180 L 400 200", w: 4, delay: 0.1, dur: 1.5 },
                             { d: "M 410 70 L 480 90 L 520 150", w: 3, delay: 0.4, dur: 1.2 },
