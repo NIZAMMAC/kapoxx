@@ -80,11 +80,11 @@ export default function AnimatedHeroBackground({ progress }) {
                 />
             </motion.svg>
             
-            {/* Dark gradient overlay for text readability on dark background */}
+            {/* Dark gradient overlay for text readability (Top only, leaving floor bright) */}
             <div style={{
                 position: 'absolute',
-                top: 0, left: 0, width: '100%', height: '100%',
-                background: 'radial-gradient(circle at center, transparent 0%, rgba(15, 23, 42, 0.8) 100%)',
+                top: 0, left: 0, width: '100%', height: '60vh',
+                background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.9) 0%, transparent 100%)',
                 zIndex: 10,
                 pointerEvents: 'none'
             }}></div>
