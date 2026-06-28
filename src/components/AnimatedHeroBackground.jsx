@@ -5,13 +5,13 @@ export default function AnimatedHeroBackground() {
     const tiles = Array.from({ length: 25 });
 
     return (
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#0f172a' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#ffffff' }}>
             
             {/* Dark gradient overlay to blend the edges */}
             <div style={{
                 position: 'absolute',
                 top: 0, left: 0, width: '100%', height: '100%',
-                background: 'radial-gradient(circle at center, transparent 0%, #0f172a 80%)',
+                background: 'radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.9) 80%)',
                 zIndex: 2,
                 pointerEvents: 'none'
             }}></div>

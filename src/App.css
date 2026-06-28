@@ -143,7 +143,7 @@ html {
 .scroll-hero-section {
     height: 400vh; /* Gives plenty of scroll room */
     position: relative;
-    background-color: var(--charcoal);
+    background-color: var(--white);
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
@@ -222,7 +222,7 @@ html {
 .hero-overlay-gradient {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at center, transparent 30%, rgba(15, 23, 42, 0.8) 100%);
+    background: radial-gradient(circle at center, transparent 30%, rgba(255, 255, 255, 0.8) 100%);
     z-index: 1;
 }
 
@@ -230,7 +230,7 @@ html {
     position: absolute;
     z-index: 2;
     padding: 0 2rem;
-    color: var(--white);
+    color: var(--charcoal);
     pointer-events: none;
     will-change: transform, opacity, filter;
 }
@@ -262,8 +262,7 @@ html {
     line-height: 1.1;
     letter-spacing: -0.04em;
     margin-bottom: 0.5rem;
-    color: var(--white);
-    text-shadow: 0 4px 12px rgba(0,0,0,0.8);
+    color: var(--charcoal);
 }
 
 .scroll-hero-section .text-blue {
@@ -272,11 +271,10 @@ html {
 
 .scroll-hero-section .hero-subtitle {
     font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-    color: #f8fafc;
+    color: var(--industrial-gray);
     max-width: 450px;
     font-weight: 500;
     line-height: 1.5;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
     margin: 0;
 }
 
