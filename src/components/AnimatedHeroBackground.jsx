@@ -168,7 +168,7 @@ export default function AnimatedHeroBackground({ progress }) {
                     justifyContent: 'center'
                 }}>
                     {/* Multiple Sprawling Cracks SVG Base */}
-                    <svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100vw', maxWidth: '1400px', height: '100%', opacity: 0.9, position: 'absolute', top: 0 }}>
+                    <motion.svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100vw', maxWidth: '1400px', height: '100%', opacity: leakingOpacity, position: 'absolute', top: 0 }}>
                         <g stroke="#334155" fill="none" strokeLinecap="butt" strokeLinejoin="miter">
                             {[
                                 // Crack 1
