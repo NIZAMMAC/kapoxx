@@ -159,9 +159,7 @@ export default function AnimatedHeroBackground({ progress }) {
                     position: 'absolute',
                     top: 0, left: '-50%',
                     width: '200%', height: '200vh',
-                    backgroundColor: '#f1f5f9',
-                    backgroundImage: 'linear-gradient(rgba(148, 163, 184, 0.3) 2px, transparent 2px), linear-gradient(90deg, rgba(148, 163, 184, 0.3) 2px, transparent 2px)',
-                    backgroundSize: '100px 100px',
+                    backgroundColor: '#e2e8f0', // Clean concrete background, no grid
                     borderTop: '6px solid #cbd5e1',
                     transform: 'rotateX(70deg)',
                     transformOrigin: 'top center',
@@ -169,8 +167,8 @@ export default function AnimatedHeroBackground({ progress }) {
                     justifyContent: 'center'
                 }}>
                     {/* Multiple Sprawling Cracks SVG Base */}
-                    <motion.svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100vw', maxWidth: '1400px', height: '100%', opacity: crackOpacity, position: 'absolute', top: 0 }}>
-                        <g stroke="#334155" fill="none" strokeLinecap="butt" strokeLinejoin="miter">
+                    <svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100vw', maxWidth: '1400px', height: '100%', position: 'absolute', top: 0 }}>
+                        <motion.g style={{ opacity: crackOpacity }} stroke="#334155" fill="none" strokeLinecap="butt" strokeLinejoin="miter">
                             {[
                                 // Crack 1
                                 { d: "M 100 0 L 120 40 L 80 90 L 130 150 L 100 200", w: 2, delay: 0.1, dur: 1.5 },
@@ -191,43 +189,45 @@ export default function AnimatedHeroBackground({ progress }) {
                             ].map((path, i) => (
                                 <path key={`crack-base-${i}`} d={path.d} strokeWidth={path.w} vectorEffect="non-scaling-stroke" />
                             ))}
-                        </g>
+                        </motion.g>
                     </svg>
 
                     {/* Animated Water Flowing INSIDE ALL the cracks */}
-                    <motion.svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100vw', maxWidth: '1400px', height: '100%', position: 'absolute', top: 0, opacity: leakingOpacity }}>
-                        {[
-                            // Crack 1
-                            { d: "M 100 0 L 120 40 L 80 90 L 130 150 L 100 200", w: 2, delay: 0.1, dur: 1.5 },
-                            { d: "M 120 40 L 160 30 L 190 80", w: 1.5, delay: 0.4, dur: 1.2 },
-                            { d: "M 80 90 L 40 110 L 20 180", w: 1, delay: 0.7, dur: 1.4 },
-                            // Crack 2
-                            { d: "M 300 0 L 280 30 L 320 70 L 290 120 L 330 180 L 300 200", w: 2.5, delay: 0.3, dur: 1.6 },
-                            { d: "M 320 70 L 380 90 L 410 150", w: 1.5, delay: 0.6, dur: 1.3 },
-                            { d: "M 280 30 L 230 50 L 210 110", w: 1.5, delay: 0.2, dur: 1.1 },
-                            // Crack 3
-                            { d: "M 500 0 L 520 40 L 480 80 L 530 140 L 490 200", w: 2, delay: 0.5, dur: 1.7 },
-                            { d: "M 520 40 L 580 30 L 620 70", w: 1.5, delay: 0.9, dur: 1.2 },
-                            { d: "M 480 80 L 430 100 L 400 160", w: 1, delay: 1.1, dur: 1.4 },
-                            // Crack 4
-                            { d: "M 700 0 L 680 50 L 720 120 L 670 180 L 700 200", w: 2.5, delay: 0.2, dur: 1.5 },
-                            { d: "M 680 50 L 630 40 L 590 80", w: 1.5, delay: 0.6, dur: 1.3 },
-                            { d: "M 720 120 L 780 140 L 800 190", w: 1.5, delay: 1.0, dur: 1.2 }
-                        ].map((path, i) => (
-                            <motion.path
-                                key={`water-crack-${i}`}
-                                d={path.d}
-                                stroke="#0ea5e9"
-                                strokeWidth={Math.max(1, path.w - 1)} // Water is inside the crack
-                                strokeLinecap="butt" strokeLinejoin="miter"
-                                vectorEffect="non-scaling-stroke"
-                                fill="none"
-                                initial={{ pathLength: 0, opacity: 1 }}
-                                animate={{ pathLength: [0, 1], opacity: [0, 1, 0] }}
-                                transition={{ duration: path.dur, repeat: Infinity, ease: 'easeIn', delay: path.delay }}
-                            />
-                        ))}
-                    </motion.svg>
+                    <svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100vw', maxWidth: '1400px', height: '100%', position: 'absolute', top: 0 }}>
+                        <motion.g style={{ opacity: leakingOpacity }}>
+                            {[
+                                // Crack 1
+                                { d: "M 100 0 L 120 40 L 80 90 L 130 150 L 100 200", w: 2, delay: 0.1, dur: 1.5 },
+                                { d: "M 120 40 L 160 30 L 190 80", w: 1.5, delay: 0.4, dur: 1.2 },
+                                { d: "M 80 90 L 40 110 L 20 180", w: 1, delay: 0.7, dur: 1.4 },
+                                // Crack 2
+                                { d: "M 300 0 L 280 30 L 320 70 L 290 120 L 330 180 L 300 200", w: 2.5, delay: 0.3, dur: 1.6 },
+                                { d: "M 320 70 L 380 90 L 410 150", w: 1.5, delay: 0.6, dur: 1.3 },
+                                { d: "M 280 30 L 230 50 L 210 110", w: 1.5, delay: 0.2, dur: 1.1 },
+                                // Crack 3
+                                { d: "M 500 0 L 520 40 L 480 80 L 530 140 L 490 200", w: 2, delay: 0.5, dur: 1.7 },
+                                { d: "M 520 40 L 580 30 L 620 70", w: 1.5, delay: 0.9, dur: 1.2 },
+                                { d: "M 480 80 L 430 100 L 400 160", w: 1, delay: 1.1, dur: 1.4 },
+                                // Crack 4
+                                { d: "M 700 0 L 680 50 L 720 120 L 670 180 L 700 200", w: 2.5, delay: 0.2, dur: 1.5 },
+                                { d: "M 680 50 L 630 40 L 590 80", w: 1.5, delay: 0.6, dur: 1.3 },
+                                { d: "M 720 120 L 780 140 L 800 190", w: 1.5, delay: 1.0, dur: 1.2 }
+                            ].map((path, i) => (
+                                <motion.path
+                                    key={`water-crack-${i}`}
+                                    d={path.d}
+                                    stroke="#0ea5e9"
+                                    strokeWidth={Math.max(1, path.w - 1)} // Water is inside the crack
+                                    strokeLinecap="butt" strokeLinejoin="miter"
+                                    vectorEffect="non-scaling-stroke"
+                                    fill="none"
+                                    initial={{ pathLength: 0, opacity: 1 }}
+                                    animate={{ pathLength: [0, 1], opacity: [0, 1, 0] }}
+                                    transition={{ duration: path.dur, repeat: Infinity, ease: 'easeIn', delay: path.delay }}
+                                />
+                            ))}
+                        </motion.g>
+                    </svg>
                 </div>
 
                 {/* The Epoxy Layer (Scroll-driven width, 3D rotated) */}
