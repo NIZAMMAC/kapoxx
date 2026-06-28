@@ -41,7 +41,26 @@ export default function AnimatedHeroBackground({ progress }) {
     const status3Opacity = useTransform(progress, [0.45, 0.55, 1], [0.3, 1, 1]);
 
     return (
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#ffffff' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#f8fafc' }}>
+            
+            {/* Stormy Dark Clouds Overlay */}
+            <div style={{
+                position: 'absolute',
+                top: 0, left: 0, width: '100%', height: '60vh',
+                background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(51, 65, 85, 0.7), transparent)',
+                zIndex: 0
+            }}></div>
+
+            {/* Lightning Flashes */}
+            <motion.div
+                style={{
+                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    zIndex: 0, pointerEvents: 'none'
+                }}
+                animate={{ opacity: [0, 0, 0, 0, 0.8, 0, 0, 0.4, 0, 0, 0] }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+            />
             
             {/* White gradient overlay for text readability */}
             <div style={{
@@ -73,8 +92,37 @@ export default function AnimatedHeroBackground({ progress }) {
                         height: `${drop.height}px`,
                         background: 'linear-gradient(to bottom, transparent, rgba(148, 163, 184, 0.8))',
                         transform: 'rotate(15deg)', // Realistic wind angle
-                        zIndex: 1,
-                        opacity: leakingOpacity
+                        zIndex: 1
+                    }}
+                />
+            ))}
+
+            {/* PHASE 3: Waterproof Bouncing Rain (Realistic Splashes on Epoxy) */}
+            {rainDrops.map((drop, i) => (
+                <motion.div
+                    key={`bounce-${i}`}
+                    animate={{ 
+                        y: ['-10vh', '50vh', '48vh'], // Hits the horizon
+                        x: [0, 0, drop.splashOffset], // Splash outwards
+                        height: [drop.height, drop.height, 4], // Shrinks into a tiny ball when splashing
+                        opacity: [0, drop.baseOpacity, 0]
+                    }}
+                    transition={{
+                        duration: drop.duration,
+                        repeat: Infinity,
+                        delay: drop.delay,
+                        ease: "linear",
+                        times: [0, 0.9, 1] // Spends 90% of time falling, 10% splashing
+                    }}
+                    style={{
+                        position: 'absolute',
+                        left: `${drop.left}%`,
+                        width: `${drop.width * 1.5}px`, // Slightly thicker for the splash
+                        background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9))',
+                        transform: 'rotate(15deg)',
+                        borderRadius: '2px',
+                        zIndex: 4, // Bounces ABOVE the epoxy
+                        opacity: bounceOpacity
                     }}
                 />
             ))}
