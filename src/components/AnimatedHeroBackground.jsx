@@ -1,4 +1,4 @@
-import { motion, useTransform } from 'framer-motion';
+import { motion, useTransform, useMotionTemplate } from 'framer-motion';
 import { useMemo } from 'react';
 
 export default function AnimatedHeroBackground({ progress }) {
@@ -27,16 +27,16 @@ export default function AnimatedHeroBackground({ progress }) {
         });
     }, []);
 
-    // Phase 1 (Leaking): 0 to 30% of scroll
-    // Phase 2 (Applying): 30% to 70% of scroll
-    // Phase 3 (Waterproof): 70% to 100% of scroll
-
     // Scroll-driven Opacities and Transforms
     // Epoxy takes twice as much scroll distance to spread now
     const leakingOpacity = useTransform(progress, [0, 0.30, 0.50], [1, 1, 0]); // Water stops leaking
     const crackOpacity = useTransform(progress, [0.60, 0.70], [0.9, 0]); // Cracks vanish AFTER epoxy finishes
     const epoxyWidth = useTransform(progress, [0.30, 0.70], ['0%', '200%']);
     const bounceOpacity = useTransform(progress, [0.50, 0.70, 0.85], [0, 1, 0]); // Splashes fade out too
+
+    // Animate the horizon blending mask so the sharp roof line appears when epoxy is finished
+    const maskStop = useTransform(progress, [0.60, 0.70], ["20%", "0%"]);
+    const maskImage = useMotionTemplate`linear-gradient(to bottom, transparent 0%, black ${maskStop}, black 100%)`;
 
     // Status Indicator Opacities
     const status1Opacity = useTransform(progress, [0, 0.30, 0.40], [1, 1, 0.3]);
@@ -143,16 +143,16 @@ export default function AnimatedHeroBackground({ progress }) {
             </motion.div>
 
             {/* 3D Floor / Roof Container */}
-            <div style={{
+            <motion.div style={{
                 position: 'absolute',
                 top: '50%', left: 0,
                 width: '100%', height: '50vh',
                 perspective: '1000px',
                 zIndex: 2,
                 overflow: 'hidden',
-                // This mask seamlessly blends the harsh horizon line into the background
-                maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)',
-                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)'
+                // Animates from blended horizon (black 20%) to sharp roof line (black 0%) at the end
+                maskImage,
+                WebkitMaskImage: maskImage
             }}>
                 {/* The Floor Base (Cracked Concrete, 3D rotated) */}
                 <div style={{
@@ -255,7 +255,7 @@ export default function AnimatedHeroBackground({ progress }) {
                         background: 'linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)'
                     }}></div>
                 </motion.div>
-            </div>
+            </motion.div>
             
             {/* Status Text Indicator for the animation story */}
             <div style={{ position: 'absolute', bottom: '2vh', right: '2vw', zIndex: 11, display: 'flex', gap: '10px', alignItems: 'center' }}>
