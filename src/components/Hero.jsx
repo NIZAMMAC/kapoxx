@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useScroll, useTransform, motion, useMotionTemplate, useSpring } from 'framer-motion';
+import AnimatedHeroBackground from './AnimatedHeroBackground';
 
 export default function Hero() {
     const containerRef = useRef(null);
@@ -45,11 +46,8 @@ export default function Hero() {
     return (
         <section ref={containerRef} className="scroll-hero-section" id="hero">
             <div className="sticky-container">
-                {/* Premium Animated CSS Background instead of heavy 500MB images */}
-                <motion.div className="hero-animated-bg" style={{ y: bgY }}>
-                    <div className="glow-orb orb-1"></div>
-                    <div className="glow-orb orb-2"></div>
-                    <div className="glow-orb orb-3"></div>
+                <motion.div style={{ y: bgY, width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
+                    <AnimatedHeroBackground />
                 </motion.div>
                 
                 <div className="hero-overlay-gradient"></div>
