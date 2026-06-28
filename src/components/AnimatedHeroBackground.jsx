@@ -43,7 +43,7 @@ export default function AnimatedHeroBackground({ progress }) {
     return (
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#f8fafc' }}>
             
-            {/* Stormy Dark Clouds Overlay */}
+            {/* Stormy Dark Clouds Background Overlay */}
             <div style={{
                 position: 'absolute',
                 top: 0, left: 0, width: '100%', height: '60vh',
@@ -51,16 +51,47 @@ export default function AnimatedHeroBackground({ progress }) {
                 zIndex: 0
             }}></div>
 
-            {/* Lightning Flashes */}
+            {/* Physical SVG Cloud Shapes */}
+            <svg width="100%" height="30vh" style={{ position: 'absolute', top: '-5vh', left: 0, zIndex: 1, filter: 'blur(8px)', opacity: 0.9 }}>
+                <circle cx="5%" cy="0" r="100" fill="#0f172a" />
+                <circle cx="20%" cy="20" r="140" fill="#1e293b" />
+                <circle cx="35%" cy="0" r="180" fill="#0f172a" />
+                <circle cx="50%" cy="30" r="150" fill="#334155" />
+                <circle cx="65%" cy="-10" r="200" fill="#1e293b" />
+                <circle cx="85%" cy="40" r="160" fill="#0f172a" />
+                <circle cx="100%" cy="10" r="120" fill="#334155" />
+            </svg>
+
+            {/* Ambient Lightning Flashes (Full Screen) */}
             <motion.div
                 style={{
                     position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                     backgroundColor: 'rgba(255, 255, 255, 0.9)',
                     zIndex: 0, pointerEvents: 'none'
                 }}
-                animate={{ opacity: [0, 0, 0, 0, 0.8, 0, 0, 0.4, 0, 0, 0] }}
+                animate={{ opacity: [0, 0, 0, 0, 0.6, 0, 0, 0.3, 0, 0, 0] }}
                 transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
             />
+
+            {/* Physical Lightning Bolts */}
+            <motion.svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '70vh', zIndex: 1, pointerEvents: 'none' }}>
+                {/* Bolt 1 (Left) */}
+                <motion.path
+                    d="M 25,10 L 28,30 L 22,35 L 30,60 L 26,65 L 35,90"
+                    stroke="#fef08a" strokeWidth="0.4" fill="none"
+                    style={{ filter: 'drop-shadow(0 0 2px #fef08a)' }}
+                    animate={{ opacity: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                />
+                {/* Bolt 2 (Right) */}
+                <motion.path
+                    d="M 75,5 L 72,20 L 78,25 L 70,45 L 75,50 L 65,75"
+                    stroke="#ffffff" strokeWidth="0.3" fill="none"
+                    style={{ filter: 'drop-shadow(0 0 2px #ffffff)' }}
+                    animate={{ opacity: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                />
+            </motion.svg>
             
             {/* White gradient overlay for text readability */}
             <div style={{
