@@ -46,15 +46,15 @@ export default function AnimatedHeroBackground({ progress }) {
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#0f172a' }}>
             
             {/* Stormy Dark Clouds Background Overlay */}
-            <div style={{
+            <motion.div style={{
                 position: 'absolute',
                 top: 0, left: 0, width: '100%', height: '60vh',
                 background: 'linear-gradient(to bottom, rgba(15, 23, 42, 1), rgba(30, 41, 59, 0.9), transparent)',
                 zIndex: 0
-            }}></div>
+            }}></motion.div>
 
             {/* Physical SVG Cloud Shapes */}
-            <svg width="100%" height="30vh" style={{ position: 'absolute', top: '-5vh', left: 0, zIndex: 1, filter: 'blur(8px)', opacity: 0.9 }}>
+            <motion.svg width="100%" height="30vh" style={{ position: 'absolute', top: '-5vh', left: 0, zIndex: 1, filter: 'blur(8px)', opacity: 0.9 }}>
                 <circle cx="5%" cy="0" r="100" fill="#0f172a" />
                 <circle cx="20%" cy="20" r="140" fill="#1e293b" />
                 <circle cx="35%" cy="0" r="180" fill="#0f172a" />
@@ -62,7 +62,8 @@ export default function AnimatedHeroBackground({ progress }) {
                 <circle cx="65%" cy="-10" r="200" fill="#1e293b" />
                 <circle cx="85%" cy="40" r="160" fill="#0f172a" />
                 <circle cx="100%" cy="10" r="120" fill="#334155" />
-            </svg>
+            </motion.svg>
+
             {/* Ambient Lightning Flashes (Full Screen) */}
             <motion.div
                 style={{
@@ -98,24 +99,24 @@ export default function AnimatedHeroBackground({ progress }) {
                 />
             </motion.svg>
             
-            {/* Dark gradient overlay for text readability (Top only, leaving floor bright) */}
+            {/* Dark gradient overlay for text readability on dark background */}
             <div style={{
                 position: 'absolute',
-                top: 0, left: 0, width: '100%', height: '60vh',
-                background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.9) 0%, transparent 100%)',
+                top: 0, left: 0, width: '100%', height: '100%',
+                background: 'radial-gradient(circle at center, transparent 0%, rgba(15, 23, 42, 0.8) 100%)',
                 zIndex: 10,
                 pointerEvents: 'none'
             }}></div>
 
-            {/* ENTIRE RAIN SYSTEM (Consistent from beginning to end) */}
+            {/* ENTIRE RAIN SYSTEM (Continuous & Consistent) */}
             <motion.div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
                 
-                {/* Realistic Bouncing Rain (Consistently hitting the roof) */}
+                {/* Unified Realistic Rain (Always falls and splashes on the roof) */}
                 {rainDrops.map((drop, i) => (
                     <motion.div
-                        key={`bounce-${i}`}
+                        key={`rain-${i}`}
                         animate={{ 
-                            y: ['-10vh', '50vh', '48vh'], // Hits the horizon/roof
+                            y: ['-10vh', '50vh', '48vh'], // Hits the horizon
                             x: [0, 0, drop.splashOffset], // Splash outwards
                             height: [drop.height, drop.height, 4], // Shrinks into a tiny ball when splashing
                             opacity: [0, drop.baseOpacity, 0]
@@ -130,36 +131,36 @@ export default function AnimatedHeroBackground({ progress }) {
                         style={{
                             position: 'absolute',
                             left: `${drop.left}%`,
-                            width: `${drop.width * 1.5}px`, // Slightly thicker for the splash
-                            background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9))',
+                            width: `${drop.width * 1.5}px`,
+                            background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.8))',
                             transform: `rotate(${drop.angle}deg)`,
                             borderRadius: '2px',
-                            zIndex: 4, // Bounces on the roof
+                            zIndex: 4 // Bounces ABOVE the epoxy
                         }}
                     />
                 ))}
             </motion.div>
 
             {/* 3D Floor / Roof Container */}
-            {/* Using mask-image to smoothly blend the sharp horizon line into the sky */}
             <div style={{
-                position: 'absolute', bottom: '-20vh', left: '-50%', width: '200%', height: '100vh',
+                position: 'absolute',
+                top: '50%', left: 0,
+                width: '100%', height: '50vh',
                 perspective: '1000px',
                 zIndex: 2,
-                pointerEvents: 'none',
-                maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)',
-                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)'
+                overflow: 'hidden'
             }}>
                 {/* The Floor Base (Cracked Concrete, 3D rotated) */}
-                <motion.div style={{
-                    width: '100%', height: '100%',
-                    background: '#e2e8f0',
-                    backgroundImage: 'linear-gradient(#cbd5e1 1px, transparent 1px), linear-gradient(90deg, #cbd5e1 1px, transparent 1px)',
-                    backgroundSize: '40px 40px',
+                <div style={{
+                    position: 'absolute',
+                    top: 0, left: '-50%',
+                    width: '200%', height: '200vh',
+                    backgroundColor: '#f1f5f9',
+                    backgroundImage: 'linear-gradient(rgba(148, 163, 184, 0.3) 2px, transparent 2px), linear-gradient(90deg, rgba(148, 163, 184, 0.3) 2px, transparent 2px)',
+                    backgroundSize: '100px 100px',
+                    borderTop: '6px solid #cbd5e1',
                     transform: 'rotateX(70deg)',
                     transformOrigin: 'top center',
-                    position: 'relative',
-                    overflow: 'hidden',
                     display: 'flex',
                     justifyContent: 'center'
                 }}>
