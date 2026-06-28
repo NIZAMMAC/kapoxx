@@ -1,94 +1,143 @@
 import { motion } from 'framer-motion';
 
 export default function AnimatedHeroBackground() {
-    // Generate raindrops
-    const drops = Array.from({ length: 45 });
-
     return (
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#ffffff' }}>
             
-            {/* Soft background gradient */}
+            {/* Animated Epoxy Liquid Gradients (using blurred glowing orbs on white background) */}
+            <motion.div 
+                animate={{
+                    scale: [1, 1.2, 1],
+                    x: ['0%', '5%', '-5%', '0%'],
+                    y: ['0%', '-5%', '5%', '0%'],
+                }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                style={{
+                    position: 'absolute',
+                    top: '-10%',
+                    left: '-10%',
+                    width: '60vw',
+                    height: '60vw',
+                    background: 'radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 60%)',
+                    filter: 'blur(60px)',
+                    zIndex: 1
+                }}
+            />
+            
+            <motion.div 
+                animate={{
+                    scale: [1, 1.3, 1],
+                    x: ['0%', '-8%', '5%', '0%'],
+                    y: ['0%', '8%', '-5%', '0%'],
+                }}
+                transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                style={{
+                    position: 'absolute',
+                    bottom: '-10%',
+                    right: '-10%',
+                    width: '70vw',
+                    height: '70vw',
+                    background: 'radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 60%)',
+                    filter: 'blur(80px)',
+                    zIndex: 1
+                }}
+            />
+
+            {/* Precision Engineering Blueprint Rings */}
             <div style={{
                 position: 'absolute',
-                top: 0, left: 0, width: '100%', height: '100%',
-                background: 'linear-gradient(to bottom, #ffffff 0%, #f0f9ff 100%)',
-                zIndex: 1,
-            }}></div>
-
-            {/* Falling Raindrops representing water */}
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}>
-                {drops.map((_, i) => {
-                    const delay = Math.random() * 5;
-                    const duration = 1.2 + Math.random() * 1.5;
-                    const left = `${Math.random() * 100}%`;
-                    return (
-                        <motion.div
-                            key={i}
-                            initial={{ y: -50, opacity: 0 }}
-                            animate={{ 
-                                y: ['-10vh', '110vh'],
-                                opacity: [0, 0.6, 0]
-                            }}
-                            transition={{
-                                duration: duration,
-                                repeat: Infinity,
-                                ease: "linear",
-                                delay: delay
-                            }}
-                            style={{
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%) rotateX(60deg)',
+                transformStyle: 'preserve-3d',
+                width: '100%',
+                height: '100%',
+                zIndex: 2,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                pointerEvents: 'none'
+            }}>
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <motion.div
+                        key={i}
+                        animate={{
+                            rotateZ: [0, 360],
+                            scale: [1, 1.02, 1]
+                        }}
+                        transition={{
+                            rotateZ: { duration: 40 + i * 15, repeat: Infinity, ease: "linear", direction: i % 2 === 0 ? "reverse" : "normal" },
+                            scale: { duration: 6 + i, repeat: Infinity, ease: "easeInOut" }
+                        }}
+                        style={{
+                            position: 'absolute',
+                            width: `${15 + i * 18}vw`,
+                            height: `${15 + i * 18}vw`,
+                            border: `1px solid rgba(6, 182, 212, ${0.4 - i * 0.05})`,
+                            borderRadius: '50%',
+                            boxShadow: `0 0 15px rgba(6, 182, 212, ${0.1 - i * 0.01}) inset, 0 0 15px rgba(6, 182, 212, ${0.1 - i * 0.01})`
+                        }}
+                    >
+                        {/* Nodes on the rings for a technical look */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '-3px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            width: '6px',
+                            height: '6px',
+                            backgroundColor: 'rgba(6, 182, 212, 0.8)',
+                            borderRadius: '50%',
+                            boxShadow: '0 0 10px rgba(6, 182, 212, 1)'
+                        }}></div>
+                        {i % 2 === 0 && (
+                            <div style={{
                                 position: 'absolute',
-                                left: left,
-                                top: 0,
-                                width: '2px',
-                                height: '35px',
-                                background: 'linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.8))',
-                                borderRadius: '2px'
-                            }}
-                        />
-                    );
-                })}
+                                bottom: '-3px',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                width: '4px',
+                                height: '4px',
+                                backgroundColor: 'rgba(6, 182, 212, 0.5)',
+                                borderRadius: '50%',
+                            }}></div>
+                        )}
+                    </motion.div>
+                ))}
             </div>
 
-            {/* Shield / Membrane curve representing waterproofing */}
-            <div style={{
-                position: 'absolute',
-                bottom: '-20%',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '150%',
-                height: '80%',
-                borderTop: '4px solid rgba(6, 182, 212, 0.25)',
-                borderRadius: '50%',
-                boxShadow: '0 -30px 60px rgba(6, 182, 212, 0.1)',
-                zIndex: 2,
-                pointerEvents: 'none'
-            }}></div>
-
-            {/* Flowing Water Waves at the bottom */}
-            <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '35%', zIndex: 3, opacity: 0.9 }}>
-                {/* Wave 1 (Back - Moves Left) */}
-                <motion.svg 
-                    viewBox="0 0 1440 320" 
-                    preserveAspectRatio="none"
-                    style={{ position: 'absolute', bottom: 0, width: '200%', height: '100%', left: 0 }}
-                    animate={{ x: ['0%', '-50%'] }}
-                    transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                >
-                    <path fill="rgba(6, 182, 212, 0.15)" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,128C672,107,768,117,864,138.7C960,160,1056,192,1152,192C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-                    <path fill="rgba(6, 182, 212, 0.15)" transform="translate(1440, 0)" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,128C672,107,768,117,864,138.7C960,160,1056,192,1152,192C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-                </motion.svg>
-                
-                {/* Wave 2 (Front - Moves Right) */}
-                <motion.svg 
-                    viewBox="0 0 1440 320" 
-                    preserveAspectRatio="none"
-                    style={{ position: 'absolute', bottom: 0, width: '200%', height: '70%', left: 0 }}
-                    animate={{ x: ['-50%', '0%'] }}
-                    transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                >
-                    <path fill="rgba(14, 165, 233, 0.25)" d="M0,96L60,112C120,128,240,160,360,165.3C480,171,600,149,720,128C840,107,960,85,1080,90.7C1200,96,1320,128,1380,144L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
-                    <path fill="rgba(14, 165, 233, 0.25)" transform="translate(1440, 0)" d="M0,96L60,112C120,128,240,160,360,165.3C480,171,600,149,720,128C840,107,960,85,1080,90.7C1200,96,1320,128,1380,144L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
-                </motion.svg>
+            {/* Floating Technical Plus signs (Blueprint style) */}
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 3, pointerEvents: 'none' }}>
+                {Array.from({ length: 20 }).map((_, i) => (
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{
+                            opacity: [0, 0.5, 0],
+                            scale: [0.5, 1, 0.5],
+                            rotate: [0, 90]
+                        }}
+                        transition={{
+                            duration: 4 + Math.random() * 5,
+                            repeat: Infinity,
+                            delay: Math.random() * 6,
+                            ease: "easeInOut"
+                        }}
+                        style={{
+                            position: 'absolute',
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                            width: '20px',
+                            height: '20px',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <div style={{ position: 'absolute', width: '2px', height: '12px', backgroundColor: 'rgba(6, 182, 212, 0.5)' }}></div>
+                        <div style={{ position: 'absolute', width: '12px', height: '2px', backgroundColor: 'rgba(6, 182, 212, 0.5)' }}></div>
+                    </motion.div>
+                ))}
             </div>
             
         </div>
