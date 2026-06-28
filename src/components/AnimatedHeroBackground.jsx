@@ -37,9 +37,6 @@ export default function AnimatedHeroBackground({ progress }) {
     const epoxyWidth = useTransform(progress, [0.30, 0.70], ['0%', '200%']);
     const bounceOpacity = useTransform(progress, [0.50, 0.70, 0.85], [0, 1, 0]); // Splashes fade out too
 
-    // Global rain opacity: Fades out entirely after epoxy is fully applied (0.70 to 0.85)
-    const globalRainOpacity = useTransform(progress, [0, 0.70, 0.85], [1, 1, 0]);
-
     // Status Indicator Opacities
     const status1Opacity = useTransform(progress, [0, 0.30, 0.40], [1, 1, 0.3]);
     const status2Opacity = useTransform(progress, [0.20, 0.40, 0.70, 0.85], [0.3, 1, 1, 0.3]);
@@ -53,12 +50,11 @@ export default function AnimatedHeroBackground({ progress }) {
                 position: 'absolute',
                 top: 0, left: 0, width: '100%', height: '60vh',
                 background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(51, 65, 85, 0.7), transparent)',
-                zIndex: 0,
-                opacity: globalRainOpacity // Clouds fade out with the rain for clear weather!
+                zIndex: 0
             }}></motion.div>
 
             {/* Physical SVG Cloud Shapes */}
-            <motion.svg width="100%" height="30vh" style={{ position: 'absolute', top: '-5vh', left: 0, zIndex: 1, filter: 'blur(8px)', opacity: globalRainOpacity }}>
+            <motion.svg width="100%" height="30vh" style={{ position: 'absolute', top: '-5vh', left: 0, zIndex: 1, filter: 'blur(8px)', opacity: 0.9 }}>
                 <circle cx="5%" cy="0" r="100" fill="#0f172a" />
                 <circle cx="20%" cy="20" r="140" fill="#1e293b" />
                 <circle cx="35%" cy="0" r="180" fill="#0f172a" />
@@ -73,8 +69,7 @@ export default function AnimatedHeroBackground({ progress }) {
                 style={{
                     position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                     backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    zIndex: 0, pointerEvents: 'none',
-                    opacity: globalRainOpacity
+                    zIndex: 0, pointerEvents: 'none'
                 }}
             >
                 <motion.div
@@ -85,7 +80,7 @@ export default function AnimatedHeroBackground({ progress }) {
             </motion.div>
 
             {/* Physical Lightning Bolts */}
-            <motion.svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '35vh', zIndex: 1, pointerEvents: 'none', opacity: globalRainOpacity }}>
+            <motion.svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '35vh', zIndex: 1, pointerEvents: 'none' }}>
                 {/* Bolt 1 (Left) */}
                 <motion.path
                     d="M 25,10 L 28,30 L 22,35 L 30,60 L 26,65 L 35,90"
@@ -113,8 +108,8 @@ export default function AnimatedHeroBackground({ progress }) {
                 pointerEvents: 'none'
             }}></div>
 
-            {/* ENTIRE RAIN SYSTEM (Fades out when epoxy is done) */}
-            <motion.div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: globalRainOpacity, zIndex: 1 }}>
+            {/* ENTIRE RAIN SYSTEM (Continuous) */}
+            <motion.div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
                 
                 {/* PHASE 1: Realistic Rain (Full Screen, Parallax Depth) */}
                 {rainDrops.map((drop, i) => (
