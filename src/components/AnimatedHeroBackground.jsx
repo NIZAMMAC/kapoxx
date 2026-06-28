@@ -71,41 +71,10 @@ export default function AnimatedHeroBackground({ progress }) {
                         left: `${drop.left}%`,
                         width: `${drop.width}px`,
                         height: `${drop.height}px`,
-                        // Realistic rain color (semi-transparent white/silver) instead of cartoon blue
                         background: 'linear-gradient(to bottom, transparent, rgba(148, 163, 184, 0.8))',
                         transform: 'rotate(15deg)', // Realistic wind angle
                         zIndex: 1,
                         opacity: leakingOpacity
-                    }}
-                />
-            ))}
-
-            {/* PHASE 3: Waterproof Bouncing Rain (Realistic Splashes) */}
-            {rainDrops.map((drop, i) => (
-                <motion.div
-                    key={`bounce-${i}`}
-                    animate={{ 
-                        y: ['-10vh', '50vh', '48vh'], // Hits the horizon
-                        x: [0, 0, drop.splashOffset], // Splash outwards
-                        height: [drop.height, drop.height, 4], // Shrinks into a tiny ball when splashing
-                        opacity: [0, drop.baseOpacity, 0]
-                    }}
-                    transition={{
-                        duration: drop.duration,
-                        repeat: Infinity,
-                        delay: drop.delay,
-                        ease: "linear",
-                        times: [0, 0.9, 1] // Spends 90% of time falling, 10% splashing
-                    }}
-                    style={{
-                        position: 'absolute',
-                        left: `${drop.left}%`,
-                        width: `${drop.width * 1.5}px`, // Slightly thicker for the splash
-                        background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9))',
-                        transform: 'rotate(15deg)',
-                        borderRadius: '2px',
-                        zIndex: 4, // Bounces ABOVE the epoxy
-                        opacity: bounceOpacity
                     }}
                 />
             ))}
