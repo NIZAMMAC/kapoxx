@@ -30,41 +30,14 @@ export default function AnimatedHeroBackground({ progress }) {
                 pointerEvents: 'none'
             }}></div>
 
-            {/* The Ceiling Base (Where the water leaks from) */}
-            <div style={{
-                position: 'absolute',
-                top: 0, left: 0,
-                width: '100%', height: '15vh',
-                backgroundColor: '#f1f5f9',
-                borderBottom: '2px solid #e2e8f0',
-                zIndex: 2,
-                overflow: 'hidden'
-            }}>
-                {[20, 50, 80].map((leftPos, idx) => (
-                    <div key={`ceiling-crack-${idx}`} style={{ position: 'absolute', left: `${leftPos}%`, top: '-5vh', transform: `translateX(-50%) rotate(180deg)`, width: '100px', height: '150%' }}>
-                        {/* Crack SVG Base */}
-                        <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', opacity: 0.5, position: 'absolute' }}>
-                            <path d="M50,0 L40,20 L55,40 L45,60 L60,80 L50,100" stroke="#94a3b8" strokeWidth="3" fill="none" />
-                            <path d="M50,40 L35,50 L40,70" stroke="#94a3b8" strokeWidth="2" fill="none" />
-                        </svg>
-                    </div>
-                ))}
-            </div>
-
-            {/* PHASE 1: Leaking Droplets (Falling from ceiling cracks to floor cracks) */}
+            {/* PHASE 1: Leaking Droplets */}
             {droplets.map((_, i) => {
-                // Pick a random ceiling crack for origin, and a random floor crack for destination
-                const ceilingCracks = [20, 50, 80];
-                const floorCracks = [15, 30, 50, 70, 85];
-                const origin = ceilingCracks[Math.floor(Math.random() * ceilingCracks.length)];
-                const destination = floorCracks[Math.floor(Math.random() * floorCracks.length)];
-                
+                const targetCrack = [25, 50, 75][Math.floor(Math.random() * 3)];
                 return (
                 <motion.div
                     key={`leak-${i}`}
                     animate={{ 
-                        y: ['5vh', '50vh', '60vh'],
-                        x: [`${origin}vw`, `${destination}vw`, `${destination}vw`],
+                        y: ['-10vh', '50vh', '60vh'],
                         scale: [1, 1, 0]
                     }}
                     transition={{
@@ -75,6 +48,8 @@ export default function AnimatedHeroBackground({ progress }) {
                     }}
                     style={{
                         position: 'absolute',
+                        // Target one of the 3 cracks precisely where rain meets the roof
+                        left: `${targetCrack + (Math.random() * 1.5 - 0.75)}%`,
                         width: '4px',
                         height: '20px',
                         background: 'linear-gradient(to bottom, transparent, #3b82f6)',
@@ -86,18 +61,12 @@ export default function AnimatedHeroBackground({ progress }) {
             )})}
 
             {/* PHASE 3: Waterproof Bouncing Droplets */}
-            {droplets.map((_, i) => {
-                const ceilingCracks = [20, 50, 80];
-                const origin = ceilingCracks[Math.floor(Math.random() * ceilingCracks.length)];
-                const floorCracks = [15, 30, 50, 70, 85];
-                const destination = floorCracks[Math.floor(Math.random() * floorCracks.length)];
-                
-                return (
+            {droplets.map((_, i) => (
                 <motion.div
                     key={`bounce-${i}`}
                     animate={{ 
-                        y: ['5vh', '50vh', '40vh'],
-                        x: [`${origin}vw`, `${destination}vw`, `${destination + (Math.random() > 0.5 ? 15 : -15)}vw`],
+                        y: ['-10vh', '50vh', '40vh'],
+                        x: [0, 0, (Math.random() > 0.5 ? 80 : -80)],
                         scale: [1, 1.2, 0]
                     }}
                     transition={{
@@ -108,6 +77,7 @@ export default function AnimatedHeroBackground({ progress }) {
                     }}
                     style={{
                         position: 'absolute',
+                        left: `${15 + Math.random() * 70}%`, // Drops fall across the whole waterproofed roof
                         width: '6px',
                         height: '15px',
                         background: 'linear-gradient(to bottom, transparent, #06b6d4)',
@@ -116,9 +86,9 @@ export default function AnimatedHeroBackground({ progress }) {
                         opacity: bounceOpacity
                     }}
                 />
-            )})}
+            ))}
 
-            {/* The Floor Base (Cracked Concrete) */}
+            {/* The Roof Base (Cracked Surface) */}
             <div style={{
                 position: 'absolute',
                 top: '50%', left: 0,
@@ -128,7 +98,7 @@ export default function AnimatedHeroBackground({ progress }) {
                 zIndex: 2,
                 overflow: 'hidden'
             }}>
-                {[15, 30, 50, 70, 85].map((leftPos, idx) => {
+                {[25, 50, 75].map((leftPos, idx) => {
                     const flip = idx % 2 === 0 ? 1 : -1;
                     return (
                         <div key={`crack-${idx}`} style={{ position: 'absolute', left: `${leftPos}%`, transform: `translateX(-50%) scaleX(${flip})`, width: '100px', height: '100%' }}>
