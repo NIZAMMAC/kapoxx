@@ -2,25 +2,26 @@ import { motion, useTransform } from 'framer-motion';
 import { useMemo } from 'react';
 
 export default function AnimatedHeroBackground({ progress }) {
-    // Generate highly realistic, fine full-screen rain droplets
+    // Generate highly realistic, turbulent full-screen rain droplets
     const rainDrops = useMemo(() => {
         return Array.from({ length: 200 }).map(() => {
             // Depth layers: 1 = far background, 2 = midground, 3 = foreground
             const depth = Math.random();
             const layer = depth > 0.85 ? 3 : (depth > 0.4 ? 2 : 1);
             
-            // Foreground rain is faster, but still very thin and faint to look like real water
+            // Foreground rain is faster and slightly thicker, picking up more light
             const speedMultiplier = layer === 3 ? 1.5 : (layer === 2 ? 1 : 0.7);
-            const width = 1; // Real rain is always visually thin, never thick blocks
-            const baseOpacity = layer === 3 ? 0.35 : (layer === 2 ? 0.2 : 0.08); // Much fainter for realism
+            const width = layer === 3 ? 2 : 1; 
+            const baseOpacity = layer === 3 ? 0.5 : (layer === 2 ? 0.3 : 0.15); 
             
             return {
                 left: Math.random() * 100,
                 delay: Math.random() * 2,
-                duration: (0.3 + Math.random() * 0.2) / speedMultiplier, // Very fast
-                height: (40 + Math.random() * 40) * speedMultiplier, // Long motion-blur streaks
+                duration: (0.3 + Math.random() * 0.2) / speedMultiplier, 
+                height: (40 + Math.random() * 50) * speedMultiplier, 
                 width: width,
                 baseOpacity: baseOpacity,
+                angle: 10 + Math.random() * 10, // Turbulent wind variation (10 to 20 degrees)
                 splashOffset: Math.random() > 0.5 ? 10 * speedMultiplier : -10 * speedMultiplier
             };
         });
@@ -121,8 +122,9 @@ export default function AnimatedHeroBackground({ progress }) {
                         left: `${drop.left}%`,
                         width: `${drop.width}px`,
                         height: `${drop.height}px`,
-                        background: 'linear-gradient(to bottom, transparent, rgba(148, 163, 184, 0.8))',
-                        transform: 'rotate(15deg)', // Realistic wind angle
+                        // Brighter white/silver rain color for visibility
+                        background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.7))',
+                        transform: `rotate(${drop.angle}deg)`, // Turbulent wind angle
                         zIndex: 1
                     }}
                 />
@@ -150,7 +152,7 @@ export default function AnimatedHeroBackground({ progress }) {
                         left: `${drop.left}%`,
                         width: `${drop.width * 1.5}px`, // Slightly thicker for the splash
                         background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9))',
-                        transform: 'rotate(15deg)',
+                        transform: `rotate(${drop.angle}deg)`,
                         borderRadius: '2px',
                         zIndex: 4, // Bounces ABOVE the epoxy
                         opacity: bounceOpacity
