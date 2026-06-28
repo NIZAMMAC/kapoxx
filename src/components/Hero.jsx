@@ -46,8 +46,8 @@ export default function Hero() {
     return (
         <section ref={containerRef} className="scroll-hero-section" id="hero">
             <div className="sticky-container">
-                <motion.div style={{ y: bgY, width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
-                    <AnimatedHeroBackground />
+                <motion.div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
+                    <AnimatedHeroBackground progress={smoothProgress} />
                 </motion.div>
                 
                 <div className="hero-overlay-gradient"></div>

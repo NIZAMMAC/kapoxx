@@ -1,26 +1,22 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { motion, useTransform } from 'framer-motion';
 
-export default function AnimatedHeroBackground() {
-    const [phase, setPhase] = useState('leaking'); // 'leaking' | 'applying' | 'waterproof'
-
-    useEffect(() => {
-        const runStory = () => {
-            setPhase('leaking');
-            // After 4 seconds of leaking, apply epoxy
-            setTimeout(() => setPhase('applying'), 4000);
-            // After 3 seconds of applying, it's waterproof
-            setTimeout(() => setPhase('waterproof'), 7000);
-        };
-        
-        runStory();
-        // Loop the entire story every 12 seconds
-        const interval = setInterval(runStory, 12000);
-        return () => clearInterval(interval);
-    }, []);
-
+export default function AnimatedHeroBackground({ progress }) {
     // Generate random droplets
     const droplets = Array.from({ length: 15 });
+
+    // Phase 1 (Leaking): 0 to 35% of scroll
+    // Phase 2 (Applying): 35% to 55% of scroll
+    // Phase 3 (Waterproof): 55% to 100% of scroll
+
+    // Scroll-driven Opacities and Transforms
+    const leakingOpacity = useTransform(progress, [0, 0.35, 0.45], [1, 1, 0]);
+    const epoxyWidth = useTransform(progress, [0.35, 0.55], ['0%', '100%']);
+    const bounceOpacity = useTransform(progress, [0.45, 0.55, 1], [0, 1, 1]);
+
+    // Status Indicator Opacities
+    const status1Opacity = useTransform(progress, [0, 0.35, 0.45], [1, 1, 0.3]);
+    const status2Opacity = useTransform(progress, [0.25, 0.45, 0.55, 0.75], [0.3, 1, 1, 0.3]);
+    const status3Opacity = useTransform(progress, [0.45, 0.55, 1], [0.3, 1, 1]);
 
     return (
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#ffffff' }}>
@@ -34,68 +30,61 @@ export default function AnimatedHeroBackground() {
                 pointerEvents: 'none'
             }}></div>
 
-            {/* PHASE 1: Leaking Droplets (Only visible when leaking) */}
-            <AnimatePresence>
-                {phase === 'leaking' && droplets.map((_, i) => (
-                    <motion.div
-                        key={`leak-${i}`}
-                        initial={{ y: '-10vh', opacity: 0 }}
-                        animate={{ 
-                            y: ['-10vh', '50vh', '50vh'],
-                            opacity: [0, 1, 0],
-                            scale: [1, 1, 0]
-                        }}
-                        exit={{ opacity: 0, transition: { duration: 0.5 } }}
-                        transition={{
-                            duration: 1.5,
-                            repeat: Infinity,
-                            delay: Math.random() * 2,
-                            ease: "easeIn"
-                        }}
-                        style={{
-                            position: 'absolute',
-                            left: `${30 + Math.random() * 40}%`,
-                            width: '4px',
-                            height: '20px',
-                            background: 'linear-gradient(to bottom, transparent, #3b82f6)',
-                            borderRadius: '5px',
-                            zIndex: 1
-                        }}
-                    />
-                ))}
-            </AnimatePresence>
+            {/* PHASE 1: Leaking Droplets */}
+            {droplets.map((_, i) => (
+                <motion.div
+                    key={`leak-${i}`}
+                    animate={{ 
+                        y: ['-10vh', '50vh', '60vh'],
+                        scale: [1, 1, 0]
+                    }}
+                    transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        delay: Math.random() * 2,
+                        ease: "easeIn"
+                    }}
+                    style={{
+                        position: 'absolute',
+                        // Water drops directly into the crack (centered between 45% and 55%)
+                        left: `${45 + Math.random() * 10}%`,
+                        width: '4px',
+                        height: '20px',
+                        background: 'linear-gradient(to bottom, transparent, #3b82f6)',
+                        borderRadius: '5px',
+                        zIndex: 1,
+                        opacity: leakingOpacity
+                    }}
+                />
+            ))}
 
-            {/* PHASE 3: Waterproof Bouncing Droplets (Only visible when waterproof) */}
-            <AnimatePresence>
-                {phase === 'waterproof' && droplets.map((_, i) => (
-                    <motion.div
-                        key={`bounce-${i}`}
-                        initial={{ y: '-10vh', opacity: 0, x: 0 }}
-                        animate={{ 
-                            y: ['-10vh', '50vh', '45vh'],
-                            x: [0, 0, (Math.random() > 0.5 ? 50 : -50)],
-                            opacity: [0, 1, 0],
-                            scale: [1, 1, 0]
-                        }}
-                        exit={{ opacity: 0, transition: { duration: 0.5 } }}
-                        transition={{
-                            duration: 1.5,
-                            repeat: Infinity,
-                            delay: Math.random() * 2,
-                            ease: "easeIn"
-                        }}
-                        style={{
-                            position: 'absolute',
-                            left: `${20 + Math.random() * 60}%`,
-                            width: '6px',
-                            height: '15px',
-                            background: 'linear-gradient(to bottom, transparent, #06b6d4)',
-                            borderRadius: '5px',
-                            zIndex: 1
-                        }}
-                    />
-                ))}
-            </AnimatePresence>
+            {/* PHASE 3: Waterproof Bouncing Droplets */}
+            {droplets.map((_, i) => (
+                <motion.div
+                    key={`bounce-${i}`}
+                    animate={{ 
+                        y: ['-10vh', '50vh', '45vh'],
+                        x: [0, 0, (Math.random() > 0.5 ? 50 : -50)],
+                        scale: [1, 1, 0]
+                    }}
+                    transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        delay: Math.random() * 2,
+                        ease: "easeIn"
+                    }}
+                    style={{
+                        position: 'absolute',
+                        left: `${20 + Math.random() * 60}%`,
+                        width: '6px',
+                        height: '15px',
+                        background: 'linear-gradient(to bottom, transparent, #06b6d4)',
+                        borderRadius: '5px',
+                        zIndex: 1,
+                        opacity: bounceOpacity
+                    }}
+                />
+            ))}
 
             {/* The Floor Base (Cracked Concrete) */}
             <div style={{
@@ -115,11 +104,8 @@ export default function AnimatedHeroBackground() {
                 </svg>
             </div>
 
-            {/* The Epoxy Layer (Applies during phase 2, stays during phase 3) */}
+            {/* The Epoxy Layer (Scroll-driven width) */}
             <motion.div
-                initial={{ width: '0%' }}
-                animate={{ width: phase === 'leaking' ? '0%' : '100%' }}
-                transition={{ duration: 2.5, ease: "easeInOut" }}
                 style={{
                     position: 'absolute',
                     top: '50%', left: 0,
@@ -128,7 +114,8 @@ export default function AnimatedHeroBackground() {
                     borderTop: '4px solid #06b6d4',
                     boxShadow: '0 -5px 20px rgba(6, 182, 212, 0.3)',
                     zIndex: 3,
-                    backdropFilter: 'blur(2px)'
+                    backdropFilter: 'blur(2px)',
+                    width: epoxyWidth
                 }}
             >
                 {/* Glossy reflection on the epoxy */}
@@ -141,11 +128,11 @@ export default function AnimatedHeroBackground() {
             
             {/* Status Text Indicator for the animation story */}
             <div style={{ position: 'absolute', bottom: '2vh', right: '2vw', zIndex: 11, display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <motion.span animate={{ opacity: phase === 'leaking' ? 1 : 0.3 }} style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 'bold' }}>1. Water Leaking</motion.span>
+                <motion.span style={{ opacity: status1Opacity, fontSize: '0.8rem', color: '#64748b', fontWeight: 'bold' }}>1. Water Leaking</motion.span>
                 <div style={{ width: '20px', height: '1px', backgroundColor: '#cbd5e1' }}></div>
-                <motion.span animate={{ opacity: phase === 'applying' ? 1 : 0.3 }} style={{ fontSize: '0.8rem', color: '#06b6d4', fontWeight: 'bold' }}>2. Epoxy Applied</motion.span>
+                <motion.span style={{ opacity: status2Opacity, fontSize: '0.8rem', color: '#06b6d4', fontWeight: 'bold' }}>2. Epoxy Applied</motion.span>
                 <div style={{ width: '20px', height: '1px', backgroundColor: '#cbd5e1' }}></div>
-                <motion.span animate={{ opacity: phase === 'waterproof' ? 1 : 0.3 }} style={{ fontSize: '0.8rem', color: '#10b981', fontWeight: 'bold' }}>3. 100% Waterproofed</motion.span>
+                <motion.span style={{ opacity: status3Opacity, fontSize: '0.8rem', color: '#10b981', fontWeight: 'bold' }}>3. 100% Waterproofed</motion.span>
             </div>
         </div>
     );
