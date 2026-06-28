@@ -43,13 +43,13 @@ export default function AnimatedHeroBackground({ progress }) {
     const status3Opacity = useTransform(progress, [0.60, 0.75, 1], [0.3, 1, 1]);
 
     return (
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#f8fafc' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#0f172a' }}>
             
             {/* Stormy Dark Clouds Background Overlay */}
             <motion.div style={{
                 position: 'absolute',
                 top: 0, left: 0, width: '100%', height: '60vh',
-                background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(51, 65, 85, 0.7), transparent)',
+                background: 'linear-gradient(to bottom, rgba(15, 23, 42, 1), rgba(30, 41, 59, 0.9), transparent)',
                 zIndex: 0
             }}></motion.div>
 
@@ -99,11 +99,11 @@ export default function AnimatedHeroBackground({ progress }) {
                 />
             </motion.svg>
             
-            {/* White gradient overlay for text readability */}
+            {/* Dark gradient overlay for text readability on dark background */}
             <div style={{
                 position: 'absolute',
                 top: 0, left: 0, width: '100%', height: '100%',
-                background: 'radial-gradient(circle at center, transparent 0%, #ffffff 90%)',
+                background: 'radial-gradient(circle at center, transparent 0%, rgba(15, 23, 42, 0.8) 100%)',
                 zIndex: 10,
                 pointerEvents: 'none'
             }}></div>
@@ -111,19 +111,21 @@ export default function AnimatedHeroBackground({ progress }) {
             {/* ENTIRE RAIN SYSTEM (Continuous) */}
             <motion.div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
                 
-                {/* PHASE 1: Realistic Rain (Full Screen, Parallax Depth) */}
+                {/* PHASE 1: Realistic Rain (Hits the roof and soaks in/splatters) */}
                 {rainDrops.map((drop, i) => (
                     <motion.div
                         key={`leak-${i}`}
                         animate={{ 
-                            y: ['-10vh', '110vh'], // Falls completely through the floor
+                            y: ['-10vh', '55vh', '58vh'], // Hits the floor level
+                            height: [drop.height, drop.height, 2], // Flattens out on impact
                             opacity: [0, drop.baseOpacity, 0]
                         }}
                         transition={{
                             duration: drop.duration,
                             repeat: Infinity,
                             delay: drop.delay,
-                            ease: "linear"
+                            ease: "linear",
+                            times: [0, 0.95, 1] // Spends most of the time falling, then splats
                         }}
                         style={{
                             position: 'absolute',

@@ -55,30 +55,30 @@ export default function Hero() {
                 
                 {/* Text 1 */}
                 <motion.div style={{ opacity: opacity1, y: y1, scale: scale1, filter: filter1 }} className="hero-text-container hero-pos-top-left">
-                    <h1 className="hero-title">
+                    <h1 className="hero-title" style={{ color: '#f8fafc' }}>
                         Precision <br/>
                         <span className="text-blue">Engineered</span> <br/>
                         Flooring.
                     </h1>
-                    <p className="hero-subtitle">Setting the industrial standard for durability.</p>
+                    <p className="hero-subtitle" style={{ color: '#cbd5e1' }}>Setting the industrial standard for durability.</p>
                 </motion.div>
 
                 {/* Text 2 */}
                 <motion.div style={{ opacity: opacity2, y: y2, scale: scale2, filter: filter2 }} className="hero-text-container hero-pos-bottom-right">
-                    <h2 className="hero-title">
+                    <h2 className="hero-title" style={{ color: '#f8fafc' }}>
                         Unmatched <br/>
                         <span className="text-blue">Durability.</span>
                     </h2>
-                    <p className="hero-subtitle">Designed to withstand extreme industrial loads without cracking or degrading.</p>
+                    <p className="hero-subtitle" style={{ color: '#cbd5e1' }}>Designed to withstand extreme industrial loads without cracking or degrading.</p>
                 </motion.div>
 
                 {/* Text 3 */}
                 <motion.div style={{ opacity: opacity3, y: y3, scale: scale3, filter: filter3 }} className="hero-text-container hero-pos-bottom-left">
-                    <h2 className="hero-title">
+                    <h2 className="hero-title" style={{ color: '#f8fafc' }}>
                         Clinical <br/>
                         <span className="text-blue">Precision.</span>
                     </h2>
-                    <p className="hero-subtitle">Antistatic, seamless, and perfectly leveled for critical hospital environments.</p>
+                    <p className="hero-subtitle" style={{ color: '#cbd5e1' }}>Antistatic, seamless, and perfectly leveled for critical hospital environments.</p>
                 </motion.div>
             </div>
         </section>
