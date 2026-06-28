@@ -41,7 +41,7 @@ export default function AnimatedHeroBackground() {
                         key={`leak-${i}`}
                         initial={{ y: '-10vh', opacity: 0 }}
                         animate={{ 
-                            y: ['-10vh', '85vh', '85vh'],
+                            y: ['-10vh', '50vh', '50vh'],
                             opacity: [0, 1, 0],
                             scale: [1, 1, 0]
                         }}
@@ -72,7 +72,7 @@ export default function AnimatedHeroBackground() {
                         key={`bounce-${i}`}
                         initial={{ y: '-10vh', opacity: 0, x: 0 }}
                         animate={{ 
-                            y: ['-10vh', '65vh', '75vh'],
+                            y: ['-10vh', '50vh', '45vh'],
                             x: [0, 0, (Math.random() > 0.5 ? 50 : -50)],
                             opacity: [0, 1, 0],
                             scale: [1, 1, 0]
@@ -100,8 +100,8 @@ export default function AnimatedHeroBackground() {
             {/* The Floor Base (Cracked Concrete) */}
             <div style={{
                 position: 'absolute',
-                bottom: 0, left: 0,
-                width: '100%', height: '35vh',
+                top: '50%', left: 0,
+                width: '100%', height: '50vh',
                 backgroundColor: '#f1f5f9',
                 borderTop: '2px solid #e2e8f0',
                 zIndex: 2,
@@ -122,8 +122,8 @@ export default function AnimatedHeroBackground() {
                 transition={{ duration: 2.5, ease: "easeInOut" }}
                 style={{
                     position: 'absolute',
-                    bottom: 0, left: 0,
-                    height: '35vh',
+                    top: '50%', left: 0,
+                    height: '50vh',
                     background: 'linear-gradient(90deg, rgba(6, 182, 212, 0.4), rgba(6, 182, 212, 0.8))',
                     borderTop: '4px solid #06b6d4',
                     boxShadow: '0 -5px 20px rgba(6, 182, 212, 0.3)',
