@@ -148,7 +148,10 @@ export default function AnimatedHeroBackground({ progress }) {
                 width: '100%', height: '50vh',
                 perspective: '1000px',
                 zIndex: 2,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                // This mask seamlessly blends the harsh horizon line into the background
+                maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)'
             }}>
                 {/* The Floor Base (Cracked Concrete, 3D rotated) */}
                 <div style={{
