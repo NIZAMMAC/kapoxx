@@ -1,8 +1,17 @@
 import { motion, useTransform } from 'framer-motion';
+import { useMemo } from 'react';
 
 export default function AnimatedHeroBackground({ progress }) {
-    // Generate random droplets
-    const droplets = Array.from({ length: 15 });
+    // Generate realistic full-screen rain droplets with stable random values
+    const rainDrops = useMemo(() => {
+        return Array.from({ length: 120 }).map(() => ({
+            left: Math.random() * 100,
+            delay: Math.random() * 2,
+            duration: 0.6 + Math.random() * 0.4,
+            height: 30 + Math.random() * 30,
+            splashOffset: Math.random() > 0.5 ? 15 : -15
+        }));
+    }, []);
 
     // Phase 1 (Leaking): 0 to 35% of scroll
     // Phase 2 (Applying): 35% to 55% of scroll
@@ -30,57 +39,57 @@ export default function AnimatedHeroBackground({ progress }) {
                 pointerEvents: 'none'
             }}></div>
 
-            {/* PHASE 1: Leaking Droplets */}
-            {droplets.map((_, i) => (
+            {/* PHASE 1: Realistic Rain (Full Screen, Leaking through cracks) */}
+            {rainDrops.map((drop, i) => (
                 <motion.div
                     key={`leak-${i}`}
                     animate={{ 
-                        y: ['-10vh', '50vh', '60vh'],
-                        scale: [1, 1, 0]
+                        y: ['-10vh', '60vh'], // Falls completely through the floor
+                        opacity: [0, 0.7, 0]
                     }}
                     transition={{
-                        duration: 1.5,
+                        duration: drop.duration, // Fast, realistic rain
                         repeat: Infinity,
-                        delay: Math.random() * 2,
-                        ease: "easeIn"
+                        delay: drop.delay,
+                        ease: "linear"
                     }}
                     style={{
                         position: 'absolute',
-                        // Water drops directly into the crack (centered between 45% and 55%)
-                        left: `${45 + Math.random() * 10}%`,
-                        width: '4px',
-                        height: '20px',
+                        left: `${drop.left}%`, // Full screen width, stable
+                        width: '1px',
+                        height: `${drop.height}px`,
                         background: 'linear-gradient(to bottom, transparent, #3b82f6)',
-                        borderRadius: '5px',
+                        transform: 'rotate(10deg)', // Slight wind angle
                         zIndex: 1,
                         opacity: leakingOpacity
                     }}
                 />
             ))}
 
-            {/* PHASE 3: Waterproof Bouncing Droplets */}
-            {droplets.map((_, i) => (
+            {/* PHASE 3: Waterproof Bouncing Rain (Full Screen, splashes on surface) */}
+            {rainDrops.map((drop, i) => (
                 <motion.div
                     key={`bounce-${i}`}
                     animate={{ 
-                        y: ['-10vh', '50vh', '40vh'],
-                        x: [0, 0, (Math.random() > 0.5 ? 80 : -80)],
-                        scale: [1, 1.2, 0]
+                        y: ['-10vh', '50vh', '48vh'], // Hits the 50vh horizon and bounces slightly
+                        x: [0, 0, drop.splashOffset], // Small splash
+                        scale: [1, 1, 0]
                     }}
                     transition={{
-                        duration: 1.5,
+                        duration: drop.duration,
                         repeat: Infinity,
-                        delay: Math.random() * 2,
-                        ease: "easeOut"
+                        delay: drop.delay,
+                        ease: "linear"
                     }}
                     style={{
                         position: 'absolute',
-                        left: `${20 + Math.random() * 60}%`,
-                        width: '6px',
-                        height: '15px',
+                        left: `${drop.left}%`,
+                        width: '2px',
+                        height: `${drop.height * 0.6}px`, // slightly shorter when bouncing
                         background: 'linear-gradient(to bottom, transparent, #06b6d4)',
-                        borderRadius: '5px',
-                        zIndex: 4, // Higher z-index so it bounces ABOVE the epoxy
+                        transform: 'rotate(10deg)',
+                        borderRadius: '2px',
+                        zIndex: 4, // Bounces ABOVE the epoxy
                         opacity: bounceOpacity
                     }}
                 />
