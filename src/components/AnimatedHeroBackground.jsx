@@ -108,43 +108,15 @@ export default function AnimatedHeroBackground({ progress }) {
                 pointerEvents: 'none'
             }}></div>
 
-            {/* ENTIRE RAIN SYSTEM (Continuous) */}
+            {/* ENTIRE RAIN SYSTEM (Consistent from beginning to end) */}
             <motion.div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
                 
-                {/* PHASE 1: Realistic Rain (Hits the roof and soaks in/splatters) */}
-                {rainDrops.map((drop, i) => (
-                    <motion.div
-                        key={`leak-${i}`}
-                        animate={{ 
-                            y: ['-10vh', '55vh', '58vh'], // Hits the floor level
-                            height: [drop.height, drop.height, 2], // Flattens out on impact
-                            opacity: [0, drop.baseOpacity, 0]
-                        }}
-                        transition={{
-                            duration: drop.duration,
-                            repeat: Infinity,
-                            delay: drop.delay,
-                            ease: "linear",
-                            times: [0, 0.95, 1] // Spends most of the time falling, then splats
-                        }}
-                        style={{
-                            position: 'absolute',
-                            left: `${drop.left}%`,
-                            width: `${drop.width}px`,
-                            height: `${drop.height}px`,
-                            // Brighter white/silver rain color for visibility
-                            background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.7))',
-                            transform: `rotate(${drop.angle}deg)`, // Turbulent wind angle
-                        }}
-                    />
-                ))}
-
-                {/* PHASE 3: Waterproof Bouncing Rain (Realistic Splashes on Epoxy) */}
+                {/* Realistic Bouncing Rain (Consistently hitting the roof) */}
                 {rainDrops.map((drop, i) => (
                     <motion.div
                         key={`bounce-${i}`}
                         animate={{ 
-                            y: ['-10vh', '50vh', '48vh'], // Hits the horizon
+                            y: ['-10vh', '50vh', '48vh'], // Hits the horizon/roof
                             x: [0, 0, drop.splashOffset], // Splash outwards
                             height: [drop.height, drop.height, 4], // Shrinks into a tiny ball when splashing
                             opacity: [0, drop.baseOpacity, 0]
@@ -163,7 +135,7 @@ export default function AnimatedHeroBackground({ progress }) {
                             background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9))',
                             transform: `rotate(${drop.angle}deg)`,
                             borderRadius: '2px',
-                            opacity: bounceOpacity
+                            zIndex: 4, // Bounces on the roof
                         }}
                     />
                 ))}
