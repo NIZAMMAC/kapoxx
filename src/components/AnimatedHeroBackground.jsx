@@ -45,25 +45,6 @@ export default function AnimatedHeroBackground({ progress }) {
     return (
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#0f172a' }}>
             
-            {/* Stormy Dark Clouds Background Overlay */}
-            <motion.div style={{
-                position: 'absolute',
-                top: 0, left: 0, width: '100%', height: '60vh',
-                background: 'linear-gradient(to bottom, rgba(15, 23, 42, 1), rgba(30, 41, 59, 0.9), transparent)',
-                zIndex: 0
-            }}></motion.div>
-
-            {/* Physical SVG Cloud Shapes */}
-            <motion.svg width="100%" height="30vh" style={{ position: 'absolute', top: '-5vh', left: 0, zIndex: 1, filter: 'blur(8px)', opacity: 0.9 }}>
-                <circle cx="5%" cy="0" r="100" fill="#0f172a" />
-                <circle cx="20%" cy="20" r="140" fill="#1e293b" />
-                <circle cx="35%" cy="0" r="180" fill="#0f172a" />
-                <circle cx="50%" cy="30" r="150" fill="#334155" />
-                <circle cx="65%" cy="-10" r="200" fill="#1e293b" />
-                <circle cx="85%" cy="40" r="160" fill="#0f172a" />
-                <circle cx="100%" cy="10" r="120" fill="#334155" />
-            </motion.svg>
-
             {/* Ambient Lightning Flashes (Full Screen) */}
             <motion.div
                 style={{
