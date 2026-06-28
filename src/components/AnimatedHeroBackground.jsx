@@ -77,27 +77,45 @@ export default function AnimatedHeroBackground() {
                     />
                 ))}
 
-                {/* --- REALISTIC FLOWING WATER STREAM ON THE BARRIER --- */}
+                {/* --- REALISTIC WAVY WATER STREAM ON THE BARRIER --- */}
                 
-                {/* Left flowing stream (from center 50vw to left edge 20vw) */}
-                <svg style={{ position: 'absolute', top: '48.5vh', left: '20vw', width: '30vw', height: '1.5vh', pointerEvents: 'none' }} preserveAspectRatio="none">
-                    {/* Layer 1 - Fast surface stream */}
-                    <motion.line x1="100%" y1="60%" x2="0%" y2="60%" stroke="rgba(14, 165, 233, 0.8)" strokeWidth="3" strokeDasharray="20 10 5 15" 
-                        animate={{ strokeDashoffset: [0, 100] }} transition={{ duration: 0.6, repeat: Infinity, ease: "linear" }} />
-                    {/* Layer 2 - Slower overlapping stream */}
-                    <motion.line x1="100%" y1="80%" x2="0%" y2="80%" stroke="rgba(6, 182, 212, 0.6)" strokeWidth="2" strokeDasharray="10 5 15 5" 
-                        animate={{ strokeDashoffset: [0, 100] }} transition={{ duration: 1.0, repeat: Infinity, ease: "linear" }} />
-                </svg>
+                {/* Left flowing WAVY stream (from center 50vw to left edge 20vw) */}
+                <div style={{ position: 'absolute', top: '48.5vh', left: '20vw', width: '30vw', height: '1.5vh', pointerEvents: 'none', overflow: 'hidden' }}>
+                    <motion.svg 
+                        viewBox="0 0 1440 320" 
+                        preserveAspectRatio="none"
+                        style={{ position: 'absolute', bottom: 0, width: '200%', height: '100%', left: 0 }}
+                        animate={{ x: ['0%', '-50%'] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                    >
+                        {/* Wave Layer 1 */}
+                        <path fill="rgba(14, 165, 233, 0.8)" d="M0,160L48,144C96,128,192,96,288,106.7C384,117,480,171,576,181.3C672,192,768,160,864,138.7C960,117,1056,107,1152,117.3C1248,128,1344,160,1392,176L1440,192L1440,320L0,320Z"></path>
+                        <path fill="rgba(14, 165, 233, 0.8)" transform="translate(1440, 0)" d="M0,160L48,144C96,128,192,96,288,106.7C384,117,480,171,576,181.3C672,192,768,160,864,138.7C960,117,1056,107,1152,117.3C1248,128,1344,160,1392,176L1440,192L1440,320L0,320Z"></path>
+                        
+                        {/* Wave Layer 2 */}
+                        <path fill="rgba(6, 182, 212, 0.6)" d="M0,96L60,112C120,128,240,160,360,165.3C480,171,600,149,720,128C840,107,960,85,1080,90.7C1200,96,1320,128,1380,144L1440,160L1440,320L0,320Z"></path>
+                        <path fill="rgba(6, 182, 212, 0.6)" transform="translate(1440, 0)" d="M0,96L60,112C120,128,240,160,360,165.3C480,171,600,149,720,128C840,107,960,85,1080,90.7C1200,96,1320,128,1380,144L1440,160L1440,320L0,320Z"></path>
+                    </motion.svg>
+                </div>
 
-                {/* Right flowing stream (from center 50vw to right edge 80vw) */}
-                <svg style={{ position: 'absolute', top: '48.5vh', left: '50vw', width: '30vw', height: '1.5vh', pointerEvents: 'none' }} preserveAspectRatio="none">
-                    {/* Layer 1 - Fast surface stream */}
-                    <motion.line x1="0%" y1="60%" x2="100%" y2="60%" stroke="rgba(14, 165, 233, 0.8)" strokeWidth="3" strokeDasharray="20 10 5 15" 
-                        animate={{ strokeDashoffset: [0, -100] }} transition={{ duration: 0.6, repeat: Infinity, ease: "linear" }} />
-                    {/* Layer 2 - Slower overlapping stream */}
-                    <motion.line x1="0%" y1="80%" x2="100%" y2="80%" stroke="rgba(6, 182, 212, 0.6)" strokeWidth="2" strokeDasharray="10 5 15 5" 
-                        animate={{ strokeDashoffset: [0, -100] }} transition={{ duration: 1.0, repeat: Infinity, ease: "linear" }} />
-                </svg>
+                {/* Right flowing WAVY stream (from center 50vw to right edge 80vw) */}
+                <div style={{ position: 'absolute', top: '48.5vh', left: '50vw', width: '30vw', height: '1.5vh', pointerEvents: 'none', overflow: 'hidden' }}>
+                    <motion.svg 
+                        viewBox="0 0 1440 320" 
+                        preserveAspectRatio="none"
+                        style={{ position: 'absolute', bottom: 0, width: '200%', height: '100%', left: '-100%' }}
+                        animate={{ x: ['0%', '50%'] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                    >
+                        {/* Wave Layer 1 */}
+                        <path fill="rgba(14, 165, 233, 0.8)" d="M0,160L48,144C96,128,192,96,288,106.7C384,117,480,171,576,181.3C672,192,768,160,864,138.7C960,117,1056,107,1152,117.3C1248,128,1344,160,1392,176L1440,192L1440,320L0,320Z"></path>
+                        <path fill="rgba(14, 165, 233, 0.8)" transform="translate(1440, 0)" d="M0,160L48,144C96,128,192,96,288,106.7C384,117,480,171,576,181.3C672,192,768,160,864,138.7C960,117,1056,107,1152,117.3C1248,128,1344,160,1392,176L1440,192L1440,320L0,320Z"></path>
+                        
+                        {/* Wave Layer 2 */}
+                        <path fill="rgba(6, 182, 212, 0.6)" d="M0,96L60,112C120,128,240,160,360,165.3C480,171,600,149,720,128C840,107,960,85,1080,90.7C1200,96,1320,128,1380,144L1440,160L1440,320L0,320Z"></path>
+                        <path fill="rgba(6, 182, 212, 0.6)" transform="translate(1440, 0)" d="M0,96L60,112C120,128,240,160,360,165.3C480,171,600,149,720,128C840,107,960,85,1080,90.7C1200,96,1320,128,1380,144L1440,160L1440,320L0,320Z"></path>
+                    </motion.svg>
+                </div>
 
                 {/* --- CONTINUOUS WATERFALLS DRIPPING OFF EDGES --- */}
                 
