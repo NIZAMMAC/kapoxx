@@ -1,81 +1,94 @@
 import { motion } from 'framer-motion';
 
 export default function AnimatedHeroBackground() {
-    // Generate a 5x5 grid of tiles for the floor
-    const tiles = Array.from({ length: 25 });
+    // Generate falling water droplets
+    const droplets = Array.from({ length: 20 });
 
     return (
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#ffffff' }}>
             
-            {/* White gradient overlay to blend the edges */}
+            {/* White gradient overlay to softly blend the edges so text remains readable */}
             <div style={{
                 position: 'absolute',
                 top: 0, left: 0, width: '100%', height: '100%',
-                background: 'radial-gradient(circle at center, transparent 0%, #ffffff 80%)',
+                background: 'radial-gradient(circle at center, transparent 0%, #ffffff 90%)',
                 zIndex: 2,
                 pointerEvents: 'none'
             }}></div>
 
-            {/* Isometric 3D Grid */}
-            <div style={{
-                position: 'absolute',
-                top: '0%',
-                left: '50%',
-                width: '120vw',
-                height: '120vw',
-                transform: 'translate(-50%, -10%) rotateX(60deg) rotateZ(-45deg)',
-                transformStyle: 'preserve-3d',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(5, 1fr)',
-                gap: '2vw',
-                opacity: 0.8,
-                zIndex: 1
-            }}>
-                {tiles.map((_, i) => {
-                    const delay = Math.random() * 5;
-                    const duration = 8 + Math.random() * 10;
-                    return (
-                        <motion.div
-                            key={i}
-                            initial={{ z: -200, opacity: 0 }}
-                            animate={{ 
-                                z: [0, Math.random() * -100 - 50, 0],
-                                opacity: [0.3, 0.8, 0.3],
-                                backgroundColor: [
-                                    'rgba(6, 182, 212, 0.1)', 
-                                    'rgba(6, 182, 212, 0.3)', 
-                                    'rgba(6, 182, 212, 0.1)'
-                                ]
-                            }}
-                            transition={{
-                                duration: duration,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                                delay: delay
-                            }}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                border: '1px solid rgba(6, 182, 212, 0.6)',
-                                boxShadow: '0 0 30px rgba(6, 182, 212, 0.2)',
-                                borderRadius: '4px'
-                            }}
-                        />
-                    );
-                })}
+            {/* Falling Water Droplets (Representing Waterproofing) */}
+            {droplets.map((_, i) => {
+                const leftPos = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = 2 + Math.random() * 3;
+                return (
+                    <motion.div
+                        key={`drop-${i}`}
+                        initial={{ y: -50, opacity: 0, scale: Math.random() * 0.5 + 0.5 }}
+                        animate={{ 
+                            y: ['-5vh', '85vh'],
+                            opacity: [0, 0.8, 0]
+                        }}
+                        transition={{
+                            duration: duration,
+                            repeat: Infinity,
+                            ease: "easeIn",
+                            delay: delay
+                        }}
+                        style={{
+                            position: 'absolute',
+                            left: `${leftPos}%`,
+                            width: '10px',
+                            height: '24px',
+                            // Water droplet shape using border-radius
+                            borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%',
+                            background: 'linear-gradient(to bottom, rgba(6, 182, 212, 0.1), rgba(6, 182, 212, 0.6))',
+                            filter: 'blur(1px)',
+                            zIndex: 1
+                        }}
+                    />
+                );
+            })}
+
+            {/* Flowing Liquid Epoxy Resin Waves at the bottom */}
+            <div style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '50%', zIndex: 1, opacity: 0.9 }}>
+                
+                {/* Wave 1 - Back Layer (Lightest) */}
+                <motion.svg 
+                    viewBox="0 0 1200 120" 
+                    preserveAspectRatio="none" 
+                    style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100%' }}
+                    animate={{ x: ['0%', '-50%'] }}
+                    transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                >
+                    <path d="M0,40 C300,120 600,-40 1200,40 L1200,120 L0,120 Z" fill="rgba(6, 182, 212, 0.08)" />
+                    <path d="M1200,40 C1500,120 1800,-40 2400,40 L2400,120 L1200,120 Z" fill="rgba(6, 182, 212, 0.08)" />
+                </motion.svg>
+                
+                {/* Wave 2 - Middle Layer (Medium) */}
+                <motion.svg 
+                    viewBox="0 0 1200 120" 
+                    preserveAspectRatio="none" 
+                    style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '80%' }}
+                    animate={{ x: ['-50%', '0%'] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                    <path d="M0,60 C300,-20 600,140 1200,60 L1200,120 L0,120 Z" fill="rgba(14, 165, 233, 0.12)" />
+                    <path d="M1200,60 C1500,-20 1800,140 2400,60 L2400,120 L1200,120 Z" fill="rgba(14, 165, 233, 0.12)" />
+                </motion.svg>
+
+                {/* Wave 3 - Front Layer (Thickest Epoxy) */}
+                <motion.svg 
+                    viewBox="0 0 1200 120" 
+                    preserveAspectRatio="none" 
+                    style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '60%' }}
+                    animate={{ x: ['0%', '-50%'] }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                >
+                    <path d="M0,80 C300,140 600,20 1200,80 L1200,120 L0,120 Z" fill="rgba(6, 182, 212, 0.15)" />
+                    <path d="M1200,80 C1500,140 1800,20 2400,80 L2400,120 L1200,120 Z" fill="rgba(6, 182, 212, 0.15)" />
+                </motion.svg>
             </div>
-            
-            {/* Floating abstract mountains/structures in the background */}
-            <motion.svg 
-                viewBox="0 0 100 100" 
-                preserveAspectRatio="none"
-                style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '40%', zIndex: 0, opacity: 0.15 }}
-                initial={{ y: 50 }}
-                animate={{ y: [20, 0, 20] }}
-                transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-            >
-                <polygon points="0,100 30,20 60,80 100,10 100,100" fill="rgba(6, 182, 212, 1)" />
-            </motion.svg>
         </div>
     );
 }
