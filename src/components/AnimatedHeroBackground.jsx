@@ -2,15 +2,28 @@ import { motion, useTransform } from 'framer-motion';
 import { useMemo } from 'react';
 
 export default function AnimatedHeroBackground({ progress }) {
-    // Generate realistic full-screen rain droplets with stable random values
+    // Generate realistic full-screen rain droplets with stable random values and parallax depth
     const rainDrops = useMemo(() => {
-        return Array.from({ length: 120 }).map(() => ({
-            left: Math.random() * 100,
-            delay: Math.random() * 2,
-            duration: 0.6 + Math.random() * 0.4,
-            height: 30 + Math.random() * 30,
-            splashOffset: Math.random() > 0.5 ? 15 : -15
-        }));
+        return Array.from({ length: 150 }).map(() => {
+            // Depth layers: 1 = far background, 2 = midground, 3 = foreground
+            const depth = Math.random();
+            const layer = depth > 0.8 ? 3 : (depth > 0.4 ? 2 : 1);
+            
+            // Foreground rain is faster, thicker, and more visible
+            const speedMultiplier = layer === 3 ? 1.5 : (layer === 2 ? 1 : 0.6);
+            const width = layer === 3 ? 2 : 1;
+            const baseOpacity = layer === 3 ? 0.7 : (layer === 2 ? 0.4 : 0.2);
+            
+            return {
+                left: Math.random() * 100,
+                delay: Math.random() * 2,
+                duration: (0.4 + Math.random() * 0.3) / speedMultiplier, // Realistic terminal velocity
+                height: (30 + Math.random() * 30) * speedMultiplier,
+                width: width,
+                baseOpacity: baseOpacity,
+                splashOffset: Math.random() > 0.5 ? 15 * speedMultiplier : -15 * speedMultiplier
+            };
+        });
     }, []);
 
     // Phase 1 (Leaking): 0 to 35% of scroll
@@ -39,41 +52,13 @@ export default function AnimatedHeroBackground({ progress }) {
                 pointerEvents: 'none'
             }}></div>
 
-            {/* PHASE 1: Realistic Rain (Full Screen, Leaking through cracks) */}
+            {/* PHASE 1: Realistic Rain (Full Screen, Parallax Depth) */}
             {rainDrops.map((drop, i) => (
                 <motion.div
                     key={`leak-${i}`}
                     animate={{ 
-                        y: ['-10vh', '60vh'], // Falls completely through the floor
-                        opacity: [0, 0.7, 0]
-                    }}
-                    transition={{
-                        duration: drop.duration, // Fast, realistic rain
-                        repeat: Infinity,
-                        delay: drop.delay,
-                        ease: "linear"
-                    }}
-                    style={{
-                        position: 'absolute',
-                        left: `${drop.left}%`, // Full screen width, stable
-                        width: '1px',
-                        height: `${drop.height}px`,
-                        background: 'linear-gradient(to bottom, transparent, #3b82f6)',
-                        transform: 'rotate(10deg)', // Slight wind angle
-                        zIndex: 1,
-                        opacity: leakingOpacity
-                    }}
-                />
-            ))}
-
-            {/* PHASE 3: Waterproof Bouncing Rain (Full Screen, splashes on surface) */}
-            {rainDrops.map((drop, i) => (
-                <motion.div
-                    key={`bounce-${i}`}
-                    animate={{ 
-                        y: ['-10vh', '50vh', '48vh'], // Hits the 50vh horizon and bounces slightly
-                        x: [0, 0, drop.splashOffset], // Small splash
-                        scale: [1, 1, 0]
+                        y: ['-10vh', '110vh'], // Falls completely through the floor
+                        opacity: [0, drop.baseOpacity, 0]
                     }}
                     transition={{
                         duration: drop.duration,
@@ -84,10 +69,40 @@ export default function AnimatedHeroBackground({ progress }) {
                     style={{
                         position: 'absolute',
                         left: `${drop.left}%`,
-                        width: '2px',
-                        height: `${drop.height * 0.6}px`, // slightly shorter when bouncing
-                        background: 'linear-gradient(to bottom, transparent, #06b6d4)',
-                        transform: 'rotate(10deg)',
+                        width: `${drop.width}px`,
+                        height: `${drop.height}px`,
+                        // Realistic rain color (semi-transparent white/silver) instead of cartoon blue
+                        background: 'linear-gradient(to bottom, transparent, rgba(148, 163, 184, 0.8))',
+                        transform: 'rotate(15deg)', // Realistic wind angle
+                        zIndex: 1,
+                        opacity: leakingOpacity
+                    }}
+                />
+            ))}
+
+            {/* PHASE 3: Waterproof Bouncing Rain (Realistic Splashes) */}
+            {rainDrops.map((drop, i) => (
+                <motion.div
+                    key={`bounce-${i}`}
+                    animate={{ 
+                        y: ['-10vh', '50vh', '48vh'], // Hits the horizon
+                        x: [0, 0, drop.splashOffset], // Splash outwards
+                        height: [drop.height, drop.height, 4], // Shrinks into a tiny ball when splashing
+                        opacity: [0, drop.baseOpacity, 0]
+                    }}
+                    transition={{
+                        duration: drop.duration,
+                        repeat: Infinity,
+                        delay: drop.delay,
+                        ease: "linear",
+                        times: [0, 0.9, 1] // Spends 90% of time falling, 10% splashing
+                    }}
+                    style={{
+                        position: 'absolute',
+                        left: `${drop.left}%`,
+                        width: `${drop.width * 1.5}px`, // Slightly thicker for the splash
+                        background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9))',
+                        transform: 'rotate(15deg)',
                         borderRadius: '2px',
                         zIndex: 4, // Bounces ABOVE the epoxy
                         opacity: bounceOpacity
