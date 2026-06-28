@@ -2,26 +2,26 @@ import { motion, useTransform } from 'framer-motion';
 import { useMemo } from 'react';
 
 export default function AnimatedHeroBackground({ progress }) {
-    // Generate realistic full-screen rain droplets with stable random values and parallax depth
+    // Generate highly realistic, fine full-screen rain droplets
     const rainDrops = useMemo(() => {
-        return Array.from({ length: 150 }).map(() => {
+        return Array.from({ length: 200 }).map(() => {
             // Depth layers: 1 = far background, 2 = midground, 3 = foreground
             const depth = Math.random();
-            const layer = depth > 0.8 ? 3 : (depth > 0.4 ? 2 : 1);
+            const layer = depth > 0.85 ? 3 : (depth > 0.4 ? 2 : 1);
             
-            // Foreground rain is faster, thicker, and more visible
-            const speedMultiplier = layer === 3 ? 1.5 : (layer === 2 ? 1 : 0.6);
-            const width = layer === 3 ? 2 : 1;
-            const baseOpacity = layer === 3 ? 0.7 : (layer === 2 ? 0.4 : 0.2);
+            // Foreground rain is faster, but still very thin and faint to look like real water
+            const speedMultiplier = layer === 3 ? 1.5 : (layer === 2 ? 1 : 0.7);
+            const width = 1; // Real rain is always visually thin, never thick blocks
+            const baseOpacity = layer === 3 ? 0.35 : (layer === 2 ? 0.2 : 0.08); // Much fainter for realism
             
             return {
                 left: Math.random() * 100,
                 delay: Math.random() * 2,
-                duration: (0.4 + Math.random() * 0.3) / speedMultiplier, // Realistic terminal velocity
-                height: (30 + Math.random() * 30) * speedMultiplier,
+                duration: (0.3 + Math.random() * 0.2) / speedMultiplier, // Very fast
+                height: (40 + Math.random() * 40) * speedMultiplier, // Long motion-blur streaks
                 width: width,
                 baseOpacity: baseOpacity,
-                splashOffset: Math.random() > 0.5 ? 15 * speedMultiplier : -15 * speedMultiplier
+                splashOffset: Math.random() > 0.5 ? 10 * speedMultiplier : -10 * speedMultiplier
             };
         });
     }, []);
@@ -74,11 +74,11 @@ export default function AnimatedHeroBackground({ progress }) {
             />
 
             {/* Physical Lightning Bolts */}
-            <motion.svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '70vh', zIndex: 1, pointerEvents: 'none' }}>
+            <motion.svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '35vh', zIndex: 1, pointerEvents: 'none' }}>
                 {/* Bolt 1 (Left) */}
                 <motion.path
                     d="M 25,10 L 28,30 L 22,35 L 30,60 L 26,65 L 35,90"
-                    stroke="#fef08a" strokeWidth="0.4" fill="none"
+                    stroke="#fef08a" strokeWidth="0.3" fill="none"
                     style={{ filter: 'drop-shadow(0 0 2px #fef08a)' }}
                     animate={{ opacity: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0] }}
                     transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
@@ -86,7 +86,7 @@ export default function AnimatedHeroBackground({ progress }) {
                 {/* Bolt 2 (Right) */}
                 <motion.path
                     d="M 75,5 L 72,20 L 78,25 L 70,45 L 75,50 L 65,75"
-                    stroke="#ffffff" strokeWidth="0.3" fill="none"
+                    stroke="#ffffff" strokeWidth="0.2" fill="none"
                     style={{ filter: 'drop-shadow(0 0 2px #ffffff)' }}
                     animate={{ opacity: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0] }}
                     transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
