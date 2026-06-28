@@ -45,6 +45,24 @@ export default function AnimatedHeroBackground({ progress }) {
     return (
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#0f172a' }}>
             
+            {/* Stormy Dark Clouds Background Overlay */}
+            <div style={{
+                position: 'absolute',
+                top: 0, left: 0, width: '100%', height: '60vh',
+                background: 'linear-gradient(to bottom, rgba(15, 23, 42, 1), rgba(30, 41, 59, 0.9), transparent)',
+                zIndex: 0
+            }}></div>
+
+            {/* Physical SVG Cloud Shapes */}
+            <svg width="100%" height="30vh" style={{ position: 'absolute', top: '-5vh', left: 0, zIndex: 1, filter: 'blur(8px)', opacity: 0.9 }}>
+                <circle cx="5%" cy="0" r="100" fill="#0f172a" />
+                <circle cx="20%" cy="20" r="140" fill="#1e293b" />
+                <circle cx="35%" cy="0" r="180" fill="#0f172a" />
+                <circle cx="50%" cy="30" r="150" fill="#334155" />
+                <circle cx="65%" cy="-10" r="200" fill="#1e293b" />
+                <circle cx="85%" cy="40" r="160" fill="#0f172a" />
+                <circle cx="100%" cy="10" r="120" fill="#334155" />
+            </svg>
             {/* Ambient Lightning Flashes (Full Screen) */}
             <motion.div
                 style={{
@@ -123,25 +141,25 @@ export default function AnimatedHeroBackground({ progress }) {
             </motion.div>
 
             {/* 3D Floor / Roof Container */}
+            {/* Using mask-image to smoothly blend the sharp horizon line into the sky */}
             <div style={{
-                position: 'absolute',
-                top: '50%', left: 0,
-                width: '100%', height: '50vh',
+                position: 'absolute', bottom: '-20vh', left: '-50%', width: '200%', height: '100vh',
                 perspective: '1000px',
                 zIndex: 2,
-                overflow: 'hidden'
+                pointerEvents: 'none',
+                maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 100%)'
             }}>
                 {/* The Floor Base (Cracked Concrete, 3D rotated) */}
-                <div style={{
-                    position: 'absolute',
-                    top: 0, left: '-50%',
-                    width: '200%', height: '200vh',
-                    backgroundColor: '#f1f5f9',
-                    backgroundImage: 'linear-gradient(rgba(148, 163, 184, 0.3) 2px, transparent 2px), linear-gradient(90deg, rgba(148, 163, 184, 0.3) 2px, transparent 2px)',
-                    backgroundSize: '100px 100px',
-                    borderTop: '6px solid #cbd5e1',
+                <motion.div style={{
+                    width: '100%', height: '100%',
+                    background: '#e2e8f0',
+                    backgroundImage: 'linear-gradient(#cbd5e1 1px, transparent 1px), linear-gradient(90deg, #cbd5e1 1px, transparent 1px)',
+                    backgroundSize: '40px 40px',
                     transform: 'rotateX(70deg)',
                     transformOrigin: 'top center',
+                    position: 'relative',
+                    overflow: 'hidden',
                     display: 'flex',
                     justifyContent: 'center'
                 }}>
