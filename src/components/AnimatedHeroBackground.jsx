@@ -27,19 +27,20 @@ export default function AnimatedHeroBackground({ progress }) {
         });
     }, []);
 
-    // Phase 1 (Leaking): 0 to 35% of scroll
-    // Phase 2 (Applying): 35% to 55% of scroll
-    // Phase 3 (Waterproof): 55% to 100% of scroll
+    // Phase 1 (Leaking): 0 to 30% of scroll
+    // Phase 2 (Applying): 30% to 70% of scroll
+    // Phase 3 (Waterproof): 70% to 100% of scroll
 
     // Scroll-driven Opacities and Transforms
-    const leakingOpacity = useTransform(progress, [0, 0.35, 0.45], [1, 1, 0]);
-    const epoxyWidth = useTransform(progress, [0.35, 0.55], ['0%', '200%']);
-    const bounceOpacity = useTransform(progress, [0.45, 0.55, 1], [0, 1, 1]);
+    // Epoxy takes twice as much scroll distance to spread now
+    const leakingOpacity = useTransform(progress, [0, 0.30, 0.50], [1, 1, 0]);
+    const epoxyWidth = useTransform(progress, [0.30, 0.70], ['0%', '200%']);
+    const bounceOpacity = useTransform(progress, [0.50, 0.70, 1], [0, 1, 1]);
 
     // Status Indicator Opacities
-    const status1Opacity = useTransform(progress, [0, 0.35, 0.45], [1, 1, 0.3]);
-    const status2Opacity = useTransform(progress, [0.25, 0.45, 0.55, 0.75], [0.3, 1, 1, 0.3]);
-    const status3Opacity = useTransform(progress, [0.45, 0.55, 1], [0.3, 1, 1]);
+    const status1Opacity = useTransform(progress, [0, 0.30, 0.40], [1, 1, 0.3]);
+    const status2Opacity = useTransform(progress, [0.20, 0.40, 0.70, 0.85], [0.3, 1, 1, 0.3]);
+    const status3Opacity = useTransform(progress, [0.60, 0.75, 1], [0.3, 1, 1]);
 
     return (
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#f8fafc' }}>
