@@ -262,7 +262,8 @@ html {
     line-height: 1.1;
     letter-spacing: -0.04em;
     margin-bottom: 0.5rem;
-    color: var(--charcoal);
+    color: var(--white);
+    text-shadow: 0 4px 12px rgba(0,0,0,0.8);
 }
 
 .scroll-hero-section .text-blue {
@@ -271,10 +272,11 @@ html {
 
 .scroll-hero-section .hero-subtitle {
     font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-    color: var(--industrial-gray);
+    color: #f8fafc;
     max-width: 450px;
     font-weight: 500;
     line-height: 1.5;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
     margin: 0;
 }
 
