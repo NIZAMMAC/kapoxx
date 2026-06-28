@@ -10,7 +10,7 @@ export default function AnimatedHeroBackground({ progress }) {
 
     // Scroll-driven Opacities and Transforms
     const leakingOpacity = useTransform(progress, [0, 0.35, 0.45], [1, 1, 0]);
-    const epoxyWidth = useTransform(progress, [0.35, 0.55], ['0%', '100%']);
+    const epoxyWidth = useTransform(progress, [0.35, 0.55], ['0%', '200%']);
     const bounceOpacity = useTransform(progress, [0.45, 0.55, 1], [0, 1, 1]);
 
     // Status Indicator Opacities
@@ -145,7 +145,7 @@ export default function AnimatedHeroBackground({ progress }) {
                         transformOrigin: 'top center',
                         zIndex: 3,
                         backdropFilter: 'blur(2px)',
-                        width: useTransform(progress, [0.35, 0.55], ['0%', '200%'])
+                        width: epoxyWidth
                     }}
                 >
                     {/* Glossy reflection on the epoxy */}
