@@ -98,9 +98,11 @@ export default function AnimatedHeroBackground({ progress }) {
                 {/* The Floor Base (Cracked Concrete, 3D rotated) */}
                 <div style={{
                     position: 'absolute',
-                    top: '-50%', left: '-50%',
-                    width: '200%', height: '200%',
+                    top: 0, left: '-50%',
+                    width: '200%', height: '200vh',
                     backgroundColor: '#f1f5f9',
+                    backgroundImage: 'linear-gradient(rgba(148, 163, 184, 0.3) 2px, transparent 2px), linear-gradient(90deg, rgba(148, 163, 184, 0.3) 2px, transparent 2px)',
+                    backgroundSize: '100px 100px',
                     borderTop: '6px solid #cbd5e1',
                     transform: 'rotateX(70deg)',
                     transformOrigin: 'top center',
@@ -108,13 +110,13 @@ export default function AnimatedHeroBackground({ progress }) {
                     justifyContent: 'center'
                 }}>
                     {/* Crack SVG Base */}
-                    <svg viewBox="0 0 100 100" style={{ width: '150px', height: '100%', opacity: 0.5, marginTop: '-6px', position: 'absolute' }}>
+                    <svg viewBox="0 0 100 100" style={{ width: '200px', height: '300px', opacity: 0.5, position: 'absolute', top: 0 }}>
                         <path d="M50,0 L40,20 L55,40 L45,60 L60,80 L50,100" stroke="#94a3b8" strokeWidth="3" fill="none" />
                         <path d="M50,40 L35,50 L40,70" stroke="#94a3b8" strokeWidth="2" fill="none" />
                     </svg>
 
                     {/* Animated Water Flowing INSIDE the cracks */}
-                    <motion.svg viewBox="0 0 100 100" style={{ width: '150px', height: '100%', marginTop: '-6px', position: 'absolute', opacity: leakingOpacity }}>
+                    <motion.svg viewBox="0 0 100 100" style={{ width: '200px', height: '300px', position: 'absolute', top: 0, opacity: leakingOpacity }}>
                         <motion.path 
                             d="M50,0 L40,20 L55,40 L45,60 L60,80 L50,100" 
                             stroke="#0ea5e9" strokeWidth="4" fill="none" 
@@ -136,12 +138,12 @@ export default function AnimatedHeroBackground({ progress }) {
                 <motion.div
                     style={{
                         position: 'absolute',
-                        top: '-50%', left: '-50%',
-                        height: '200%',
-                        background: 'linear-gradient(90deg, rgba(6, 182, 212, 0.4), rgba(6, 182, 212, 0.8))',
+                        top: 0, left: '-50%',
+                        height: '200vh',
+                        background: 'linear-gradient(180deg, rgba(6, 182, 212, 0.6), rgba(6, 182, 212, 0.95))',
                         borderTop: '8px solid #06b6d4',
                         boxShadow: '0 0 30px rgba(6, 182, 212, 0.5)',
-                        transform: 'rotateX(70deg) translateZ(10px)',
+                        transform: 'rotateX(70deg) translateZ(5px)',
                         transformOrigin: 'top center',
                         zIndex: 3,
                         backdropFilter: 'blur(2px)',
