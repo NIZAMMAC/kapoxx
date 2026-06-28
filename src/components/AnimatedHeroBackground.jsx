@@ -159,7 +159,9 @@ export default function AnimatedHeroBackground({ progress }) {
                     position: 'absolute',
                     top: 0, left: '-50%',
                     width: '200%', height: '200vh',
-                    backgroundColor: '#e2e8f0', // Clean concrete background, no grid
+                    backgroundColor: '#f1f5f9',
+                    backgroundImage: 'linear-gradient(rgba(148, 163, 184, 0.3) 2px, transparent 2px), linear-gradient(90deg, rgba(148, 163, 184, 0.3) 2px, transparent 2px)',
+                    backgroundSize: '100px 100px',
                     borderTop: '6px solid #cbd5e1',
                     transform: 'rotateX(70deg)',
                     transformOrigin: 'top center',
