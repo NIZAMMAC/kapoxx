@@ -1,4 +1,4 @@
-import { motion, useTransform, useMotionTemplate } from 'framer-motion';
+import { motion, useTransform } from 'framer-motion';
 import { useMemo } from 'react';
 
 export default function AnimatedHeroBackground({ progress }) {
@@ -31,19 +31,14 @@ export default function AnimatedHeroBackground({ progress }) {
     // Phase 2 (Applying): 30% to 70% of scroll
     // Phase 3 (Waterproof): 70% to 100% of scroll
 
-    // Apple-style Cinematic 3D Camera Swoop
-    // The floor starts tilted at 60deg (looking down) and flattens out to 80deg (looking forward) while zooming in
-    const floorRotateX = useTransform(progress, [0, 1], [60, 80]);
-    const floorTranslateZ = useTransform(progress, [0, 1], [0, 150]);
-    
-    // We use useMotionTemplate to construct the dynamic transform string
-    const floorTransform = useMotionTemplate`rotateX(${floorRotateX}deg) translateZ(${floorTranslateZ}px)`;
-
     // Scroll-driven Opacities and Transforms
     // Epoxy takes twice as much scroll distance to spread now
     const leakingOpacity = useTransform(progress, [0, 0.30, 0.50], [1, 1, 0]);
     const epoxyWidth = useTransform(progress, [0.30, 0.70], ['0%', '200%']);
-    const bounceOpacity = useTransform(progress, [0.50, 0.70, 1], [0, 1, 1]);
+    const bounceOpacity = useTransform(progress, [0.50, 0.70, 0.85], [0, 1, 0]); // Splashes fade out too
+
+    // Global rain opacity: Fades out entirely after epoxy is fully applied (0.70 to 0.85)
+    const globalRainOpacity = useTransform(progress, [0, 0.70, 0.85], [1, 1, 0]);
 
     // Status Indicator Opacities
     const status1Opacity = useTransform(progress, [0, 0.30, 0.40], [1, 1, 0.3]);
@@ -54,15 +49,16 @@ export default function AnimatedHeroBackground({ progress }) {
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#f8fafc' }}>
             
             {/* Stormy Dark Clouds Background Overlay */}
-            <div style={{
+            <motion.div style={{
                 position: 'absolute',
                 top: 0, left: 0, width: '100%', height: '60vh',
                 background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(51, 65, 85, 0.7), transparent)',
-                zIndex: 0
-            }}></div>
+                zIndex: 0,
+                opacity: globalRainOpacity // Clouds fade out with the rain for clear weather!
+            }}></motion.div>
 
             {/* Physical SVG Cloud Shapes */}
-            <svg width="100%" height="30vh" style={{ position: 'absolute', top: '-5vh', left: 0, zIndex: 1, filter: 'blur(8px)', opacity: 0.9 }}>
+            <motion.svg width="100%" height="30vh" style={{ position: 'absolute', top: '-5vh', left: 0, zIndex: 1, filter: 'blur(8px)', opacity: globalRainOpacity }}>
                 <circle cx="5%" cy="0" r="100" fill="#0f172a" />
                 <circle cx="20%" cy="20" r="140" fill="#1e293b" />
                 <circle cx="35%" cy="0" r="180" fill="#0f172a" />
@@ -70,21 +66,26 @@ export default function AnimatedHeroBackground({ progress }) {
                 <circle cx="65%" cy="-10" r="200" fill="#1e293b" />
                 <circle cx="85%" cy="40" r="160" fill="#0f172a" />
                 <circle cx="100%" cy="10" r="120" fill="#334155" />
-            </svg>
+            </motion.svg>
 
             {/* Ambient Lightning Flashes (Full Screen) */}
             <motion.div
                 style={{
                     position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                     backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    zIndex: 0, pointerEvents: 'none'
+                    zIndex: 0, pointerEvents: 'none',
+                    opacity: globalRainOpacity
                 }}
-                animate={{ opacity: [0, 0, 0, 0, 0.6, 0, 0, 0.3, 0, 0, 0] }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-            />
+            >
+                <motion.div
+                    style={{ width: '100%', height: '100%' }}
+                    animate={{ opacity: [0, 0, 0, 0, 0.6, 0, 0, 0.3, 0, 0, 0] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                />
+            </motion.div>
 
             {/* Physical Lightning Bolts */}
-            <motion.svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '35vh', zIndex: 1, pointerEvents: 'none' }}>
+            <motion.svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '35vh', zIndex: 1, pointerEvents: 'none', opacity: globalRainOpacity }}>
                 {/* Bolt 1 (Left) */}
                 <motion.path
                     d="M 25,10 L 28,30 L 22,35 L 30,60 L 26,65 L 35,90"
@@ -112,62 +113,64 @@ export default function AnimatedHeroBackground({ progress }) {
                 pointerEvents: 'none'
             }}></div>
 
-            {/* PHASE 1: Realistic Rain (Full Screen, Parallax Depth) */}
-            {rainDrops.map((drop, i) => (
-                <motion.div
-                    key={`leak-${i}`}
-                    animate={{ 
-                        y: ['-10vh', '110vh'], // Falls completely through the floor
-                        opacity: [0, drop.baseOpacity, 0]
-                    }}
-                    transition={{
-                        duration: drop.duration,
-                        repeat: Infinity,
-                        delay: drop.delay,
-                        ease: "linear"
-                    }}
-                    style={{
-                        position: 'absolute',
-                        left: `${drop.left}%`,
-                        width: `${drop.width}px`,
-                        height: `${drop.height}px`,
-                        // Brighter white/silver rain color for visibility
-                        background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.7))',
-                        transform: `rotate(${drop.angle}deg)`, // Turbulent wind angle
-                        zIndex: 1
-                    }}
-                />
-            ))}
+            {/* ENTIRE RAIN SYSTEM (Fades out when epoxy is done) */}
+            <motion.div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: globalRainOpacity, zIndex: 1 }}>
+                
+                {/* PHASE 1: Realistic Rain (Full Screen, Parallax Depth) */}
+                {rainDrops.map((drop, i) => (
+                    <motion.div
+                        key={`leak-${i}`}
+                        animate={{ 
+                            y: ['-10vh', '110vh'], // Falls completely through the floor
+                            opacity: [0, drop.baseOpacity, 0]
+                        }}
+                        transition={{
+                            duration: drop.duration,
+                            repeat: Infinity,
+                            delay: drop.delay,
+                            ease: "linear"
+                        }}
+                        style={{
+                            position: 'absolute',
+                            left: `${drop.left}%`,
+                            width: `${drop.width}px`,
+                            height: `${drop.height}px`,
+                            // Brighter white/silver rain color for visibility
+                            background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.7))',
+                            transform: `rotate(${drop.angle}deg)`, // Turbulent wind angle
+                        }}
+                    />
+                ))}
 
-            {/* PHASE 3: Waterproof Bouncing Rain (Realistic Splashes on Epoxy) */}
-            {rainDrops.map((drop, i) => (
-                <motion.div
-                    key={`bounce-${i}`}
-                    animate={{ 
-                        y: ['-10vh', '50vh', '48vh'], // Hits the horizon
-                        x: [0, 0, drop.splashOffset], // Splash outwards
-                        height: [drop.height, drop.height, 4], // Shrinks into a tiny ball when splashing
-                        opacity: [0, drop.baseOpacity, 0]
-                    }}
-                    transition={{
-                        duration: drop.duration,
-                        repeat: Infinity,
-                        delay: drop.delay,
-                        ease: "linear",
-                        times: [0, 0.9, 1] // Spends 90% of time falling, 10% splashing
-                    }}
-                    style={{
-                        position: 'absolute',
-                        left: `${drop.left}%`,
-                        width: `${drop.width * 1.5}px`, // Slightly thicker for the splash
-                        background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9))',
-                        transform: `rotate(${drop.angle}deg)`,
-                        borderRadius: '2px',
-                        zIndex: 4, // Bounces ABOVE the epoxy
-                        opacity: bounceOpacity
-                    }}
-                />
-            ))}
+                {/* PHASE 3: Waterproof Bouncing Rain (Realistic Splashes on Epoxy) */}
+                {rainDrops.map((drop, i) => (
+                    <motion.div
+                        key={`bounce-${i}`}
+                        animate={{ 
+                            y: ['-10vh', '50vh', '48vh'], // Hits the horizon
+                            x: [0, 0, drop.splashOffset], // Splash outwards
+                            height: [drop.height, drop.height, 4], // Shrinks into a tiny ball when splashing
+                            opacity: [0, drop.baseOpacity, 0]
+                        }}
+                        transition={{
+                            duration: drop.duration,
+                            repeat: Infinity,
+                            delay: drop.delay,
+                            ease: "linear",
+                            times: [0, 0.9, 1] // Spends 90% of time falling, 10% splashing
+                        }}
+                        style={{
+                            position: 'absolute',
+                            left: `${drop.left}%`,
+                            width: `${drop.width * 1.5}px`, // Slightly thicker for the splash
+                            background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9))',
+                            transform: `rotate(${drop.angle}deg)`,
+                            borderRadius: '2px',
+                            opacity: bounceOpacity
+                        }}
+                    />
+                ))}
+            </motion.div>
 
             {/* 3D Floor / Roof Container */}
             <div style={{
@@ -187,7 +190,7 @@ export default function AnimatedHeroBackground({ progress }) {
                     backgroundImage: 'linear-gradient(rgba(148, 163, 184, 0.3) 2px, transparent 2px), linear-gradient(90deg, rgba(148, 163, 184, 0.3) 2px, transparent 2px)',
                     backgroundSize: '100px 100px',
                     borderTop: '6px solid #cbd5e1',
-                    transform: floorTransform,
+                    transform: 'rotateX(70deg)',
                     transformOrigin: 'top center',
                     display: 'flex',
                     justifyContent: 'center'
@@ -252,7 +255,7 @@ export default function AnimatedHeroBackground({ progress }) {
                         background: 'linear-gradient(180deg, rgba(6, 182, 212, 0.6), rgba(6, 182, 212, 0.95))',
                         borderTop: '8px solid #06b6d4',
                         boxShadow: '0 0 30px rgba(6, 182, 212, 0.5)',
-                        transform: floorTransform, // Uses the exact same camera swoop as the concrete
+                        transform: 'rotateX(70deg) translateZ(5px)',
                         transformOrigin: 'top center',
                         zIndex: 3,
                         backdropFilter: 'blur(2px)',

@@ -11,10 +11,10 @@ export default function Hero() {
     });
 
     // Apply Apple-style inertia and physics smoothing to the raw scroll value
+    // Ultra-smooth configuration for silky scroll flow
     const smoothProgress = useSpring(scrollYProgress, {
         stiffness: 40,
         damping: 15,
-        mass: 0.5,
         restDelta: 0.001
     });
 
