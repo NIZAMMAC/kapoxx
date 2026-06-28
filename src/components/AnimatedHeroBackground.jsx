@@ -63,15 +63,15 @@ export default function AnimatedHeroBackground({ progress }) {
                 <motion.div
                     key={`bounce-${i}`}
                     animate={{ 
-                        y: ['-10vh', '50vh', '45vh'],
-                        x: [0, 0, (Math.random() > 0.5 ? 50 : -50)],
-                        scale: [1, 1, 0]
+                        y: ['-10vh', '50vh', '40vh'],
+                        x: [0, 0, (Math.random() > 0.5 ? 80 : -80)],
+                        scale: [1, 1.2, 0]
                     }}
                     transition={{
                         duration: 1.5,
                         repeat: Infinity,
                         delay: Math.random() * 2,
-                        ease: "easeIn"
+                        ease: "easeOut"
                     }}
                     style={{
                         position: 'absolute',
@@ -80,7 +80,7 @@ export default function AnimatedHeroBackground({ progress }) {
                         height: '15px',
                         background: 'linear-gradient(to bottom, transparent, #06b6d4)',
                         borderRadius: '5px',
-                        zIndex: 1,
+                        zIndex: 4, // Higher z-index so it bounces ABOVE the epoxy
                         opacity: bounceOpacity
                     }}
                 />
@@ -97,11 +97,29 @@ export default function AnimatedHeroBackground({ progress }) {
                 display: 'flex',
                 justifyContent: 'center'
             }}>
-                {/* Crack SVG */}
-                <svg viewBox="0 0 100 100" style={{ width: '100px', height: '100%', opacity: 0.3, marginTop: '-2px' }}>
+                {/* Crack SVG Base */}
+                <svg viewBox="0 0 100 100" style={{ width: '100px', height: '100%', opacity: 0.5, marginTop: '-2px', position: 'absolute' }}>
                     <path d="M50,0 L40,20 L55,40 L45,60 L60,80 L50,100" stroke="#94a3b8" strokeWidth="3" fill="none" />
                     <path d="M50,40 L35,50 L40,70" stroke="#94a3b8" strokeWidth="2" fill="none" />
                 </svg>
+
+                {/* Animated Water Flowing INSIDE the cracks */}
+                <motion.svg viewBox="0 0 100 100" style={{ width: '100px', height: '100%', marginTop: '-2px', position: 'absolute', opacity: leakingOpacity }}>
+                    <motion.path 
+                        d="M50,0 L40,20 L55,40 L45,60 L60,80 L50,100" 
+                        stroke="#0ea5e9" strokeWidth="4" fill="none" 
+                        initial={{ pathLength: 0, opacity: 1 }}
+                        animate={{ pathLength: [0, 1], opacity: [0, 1, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: 'easeIn', delay: 0.2 }}
+                    />
+                    <motion.path 
+                        d="M50,40 L35,50 L40,70" 
+                        stroke="#0ea5e9" strokeWidth="3" fill="none" 
+                        initial={{ pathLength: 0, opacity: 1 }}
+                        animate={{ pathLength: [0, 1], opacity: [0, 1, 0] }}
+                        transition={{ duration: 1.2, repeat: Infinity, ease: 'easeIn', delay: 0.6 }}
+                    />
+                </motion.svg>
             </div>
 
             {/* The Epoxy Layer (Scroll-driven width) */}
