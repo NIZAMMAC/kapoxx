@@ -28,20 +28,20 @@ export default function AnimatedHeroBackground({ progress }) {
     }, []);
 
     // Scroll-driven Opacities and Transforms
-    // Epoxy takes twice as much scroll distance to spread now
-    const leakingOpacity = useTransform(progress, [0, 0.30, 0.50], [1, 1, 0]); // Water stops leaking
-    const crackOpacity = useTransform(progress, [0.60, 0.70], [0.9, 0]); // Cracks vanish AFTER epoxy finishes
-    const epoxyWidth = useTransform(progress, [0.30, 0.70], ['0%', '200%']);
-    const bounceOpacity = useTransform(progress, [0.50, 0.70, 0.85], [0, 1, 0]); // Splashes fade out too
+    // Decrease the speed of epoxy spreading by making it take up 80% of the entire scroll distance
+    const leakingOpacity = useTransform(progress, [0, 0.20, 0.60], [1, 1, 0]); // Water stops leaking slower
+    const crackOpacity = useTransform(progress, [0.80, 0.90], [0.9, 0]); // Cracks vanish AFTER epoxy finishes
+    const epoxyWidth = useTransform(progress, [0.10, 0.90], ['0%', '200%']);
+    const bounceOpacity = useTransform(progress, [0.60, 0.90, 0.95], [0, 1, 0]); // Splashes fade out too
 
     // Animate the horizon blending mask so the sharp roof line appears when epoxy is finished
-    const maskStop = useTransform(progress, [0.60, 0.70], ["20%", "0%"]);
+    const maskStop = useTransform(progress, [0.80, 0.90], ["20%", "0%"]);
     const maskImage = useMotionTemplate`linear-gradient(to bottom, transparent 0%, black ${maskStop}, black 100%)`;
 
     // Status Indicator Opacities
-    const status1Opacity = useTransform(progress, [0, 0.30, 0.40], [1, 1, 0.3]);
-    const status2Opacity = useTransform(progress, [0.20, 0.40, 0.70, 0.85], [0.3, 1, 1, 0.3]);
-    const status3Opacity = useTransform(progress, [0.60, 0.75, 1], [0.3, 1, 1]);
+    const status1Opacity = useTransform(progress, [0, 0.15, 0.30], [1, 1, 0.3]);
+    const status2Opacity = useTransform(progress, [0.10, 0.30, 0.90, 0.95], [0.3, 1, 1, 0.3]);
+    const status3Opacity = useTransform(progress, [0.80, 0.90, 1], [0.3, 1, 1]);
 
     return (
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, backgroundColor: '#0f172a' }}>
