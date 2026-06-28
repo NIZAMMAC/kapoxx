@@ -33,7 +33,8 @@ export default function AnimatedHeroBackground({ progress }) {
 
     // Scroll-driven Opacities and Transforms
     // Epoxy takes twice as much scroll distance to spread now
-    const leakingOpacity = useTransform(progress, [0, 0.30, 0.50], [1, 1, 0]);
+    const leakingOpacity = useTransform(progress, [0, 0.30, 0.50], [1, 1, 0]); // Water stops leaking
+    const crackOpacity = useTransform(progress, [0.60, 0.70], [0.9, 0]); // Cracks vanish AFTER epoxy finishes
     const epoxyWidth = useTransform(progress, [0.30, 0.70], ['0%', '200%']);
     const bounceOpacity = useTransform(progress, [0.50, 0.70, 0.85], [0, 1, 0]); // Splashes fade out too
 
@@ -168,7 +169,7 @@ export default function AnimatedHeroBackground({ progress }) {
                     justifyContent: 'center'
                 }}>
                     {/* Multiple Sprawling Cracks SVG Base */}
-                    <motion.svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100vw', maxWidth: '1400px', height: '100%', opacity: leakingOpacity, position: 'absolute', top: 0 }}>
+                    <motion.svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100vw', maxWidth: '1400px', height: '100%', opacity: crackOpacity, position: 'absolute', top: 0 }}>
                         <g stroke="#334155" fill="none" strokeLinecap="butt" strokeLinejoin="miter">
                             {[
                                 // Crack 1
